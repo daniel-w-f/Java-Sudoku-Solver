@@ -12,7 +12,7 @@ public class SudokuSolver {
 
         ArrayList<Integer> row = new ArrayList<Integer>();
         row.add(1);
-        row.add(null);
+        row.add(1);
         row.add(2);
         row.add(null);
         row.add(null);
@@ -27,9 +27,9 @@ public class SudokuSolver {
         row.add(null);
         row.add(7);
         row.add(6);
-        row.add(null);
+        row.add(2);
         row.add(8);
-        row.add(null);
+        row.add(2);
         row.add(9);
         row.add(null);
         startingGrid.add(row);
@@ -80,27 +80,23 @@ public class SudokuSolver {
         System.out.println("validateGrid");
         boolean validGrid = true;
         for (int i = 0; i < grid.size(); i++) {
+            boolean validRow = true;
+            System.out.print("Row: "+ (i+1) +"\t");
 
             ArrayList<Integer> row = grid.get(i);
 
             Set<Integer> tempSet = new HashSet<>();
 
-            for (int j = 0; j < row.size(); j++) {
+            for (int j = 0; j < row.size(); j++) {                
+                System.out.print("Cell: "+ (j+1) +"\t");
                 Integer cell = row.get(j);
                 if (cell != null && !tempSet.add(cell)) {
-                    System.out.println("[" + cell + "] - already exists");
+                    System.out.print("[" + cell + "] - already exists in row\t");
                     validGrid = false;
-                }
-
-                System.out.print(cell != null ? cell : ".");
-                if (j == 2 || j == 5) {
-                    System.out.print("|");
+                    validRow = false;
                 }
             }
-            System.out.println();
-            if (i == 2 || i == 5) {
-                System.out.println("---+---+---");
-            }
+            System.out.println("The row is "+ (validRow ? "" : "not ") +"valid");
         }
         return validGrid;
     }
