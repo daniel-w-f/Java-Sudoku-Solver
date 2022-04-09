@@ -3,7 +3,6 @@ import java.util.ArrayList;
 public class SudokuSolver {
 
     public static void main(String[] args) {
-        System.out.println("Hello World");
 
         ArrayList<ArrayList<Integer>> startingGrid = new ArrayList<ArrayList<Integer>>();
 
@@ -19,7 +18,7 @@ public class SudokuSolver {
         row.add(null);
 
         startingGrid.add(row);
-        row.clear();
+        row = new ArrayList<Integer>();
         row.add(2);
         row.add(null);
         row.add(6);
@@ -30,17 +29,41 @@ public class SudokuSolver {
         row.add(9);
         row.add(null);
         startingGrid.add(row);
+        row = new ArrayList<Integer>();
+        row.add(null);
+        row.add(null);
+        row.add(2);
+        row.add(null);
+        row.add(null);
+        row.add(null);
+        row.add(null);
+        row.add(1);
+        row.add(3);
         startingGrid.add(row);
-
-        System.out.println(startingGrid);
+        startingGrid.add(row);
+        startingGrid.add(row);
+        startingGrid.add(row);
+        startingGrid.add(row);
+        startingGrid.add(row);
+        startingGrid.add(row);
 
         printGrid(startingGrid);
 
     }
 
     public static void printGrid(ArrayList<ArrayList<Integer>> grid) {
-        for (ArrayList<Integer> arrayList : grid) {
-            System.out.println(arrayList);
+        for (int i = 0; i < grid.size(); i++) {
+            ArrayList<Integer> row = grid.get(i);
+            for (int j = 0; j < row.size(); j++) {
+                System.out.print(row.get(j) != null ? row.get(j) : ".");
+                if (j == 2 || j == 5) {
+                    System.out.print("|");
+                }
+            }
+            System.out.println();
+            if (i == 2 || i == 5) {
+                System.out.println("---+---+---");
+            }
         }
     }
 }
