@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class SudokuSolver {
@@ -81,14 +79,14 @@ public class SudokuSolver {
         boolean validGrid = true;
         for (int i = 0; i < grid.size(); i++) {
             boolean validRow = true;
-            System.out.print("Row: "+ (i+1) +"\t");
+            System.out.print("Row: " + (i + 1) + "\t");
 
             ArrayList<Integer> row = grid.get(i);
 
             Set<Integer> tempSet = new HashSet<>();
 
-            for (int j = 0; j < row.size(); j++) {                
-                System.out.print("Cell: "+ (j+1) +"\t");
+            for (int j = 0; j < row.size(); j++) {
+                System.out.print("Cell: " + (j + 1) + "\t");
                 Integer cell = row.get(j);
                 if (cell != null && !tempSet.add(cell)) {
                     System.out.print("[" + cell + "] - already exists in row\t");
@@ -96,7 +94,7 @@ public class SudokuSolver {
                     validRow = false;
                 }
             }
-            System.out.println("The row is "+ (validRow ? "" : "not ") +"valid");
+            System.out.println("The row is " + (validRow ? "" : "not ") + "valid");
         }
         return validGrid;
     }
