@@ -1,13 +1,19 @@
 package object;
+
 import java.util.ArrayList;
 
 public class Cell {
 
-    public Cell(int row, int column, Integer value, int box) {
+    public Cell(int row, int column, Integer value) {
         this.row = row;
         this.column = column;
         this.value = value;
-        this.box = box;
+        this.box = (int)(Math.ceil(row/3.0)-1)*3 + (int)Math.ceil(column/3.0);
+
+        System.out.print("row: " + row +" | ");
+        System.out.print("column: " + column +" | ");
+        System.out.print("box: " + box );
+        System.out.println();
     }
 
     public int row;
