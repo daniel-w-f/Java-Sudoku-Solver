@@ -111,11 +111,8 @@ public class SudokuSolverWithObjects {
         printGrid(grid);
         validateGrid(grid);
 
-        // List<Cell> rowOneCells = grid.stream().filter(c -> c.getRow() ==
-        // 1).collect(Collectors.toList());
-
-        // System.out.println(grid);
-        // System.out.println(rowOneCells);
+        // Todo: Add method to find possible values for a cell based on row, column and
+        // box check
     }
 
     public static void printGrid(ArrayList<Cell> grid) {
@@ -123,7 +120,8 @@ public class SudokuSolverWithObjects {
 
         for (int i = 1; i < 10; i++) {
             int row = i;
-            List<Cell> cellsFromRow = grid.stream().filter(c -> c.getRow() == row).collect(Collectors.toList());
+            List<Cell> cellsFromRow = grid.stream().filter(c -> c.getRow() == row)
+                    .collect(Collectors.toList());
 
             for (int j = 0; j < cellsFromRow.size(); j++) {
                 Cell currentCell = cellsFromRow.get(j);
@@ -151,7 +149,8 @@ public class SudokuSolverWithObjects {
             System.out.print("Row: " + (i) + "\t");
 
             int row = i;
-            List<Cell> cellsFromRow = grid.stream().filter(c -> c.getRow() == row).collect(Collectors.toList());
+            List<Cell> cellsFromRow = grid.stream().filter(c -> c.getRow() == row)
+                    .collect(Collectors.toList());
 
             validListOfCells(cellsFromRow, validGrid);
         }
@@ -161,7 +160,8 @@ public class SudokuSolverWithObjects {
             System.out.print("Column: " + (i) + "\t");
 
             int column = i;
-            List<Cell> cellsFromColumn = grid.stream().filter(c -> c.getColumn() == column).collect(Collectors.toList());
+            List<Cell> cellsFromColumn = grid.stream().filter(c -> c.getColumn() == column)
+                    .collect(Collectors.toList());
 
             validListOfCells(cellsFromColumn, validGrid);
         }
@@ -171,11 +171,12 @@ public class SudokuSolverWithObjects {
             System.out.print("Box: " + (i) + "\t");
 
             int box = i;
-            List<Cell> cellsFromColumn = grid.stream().filter(c -> c.getBox() == box).collect(Collectors.toList());
+            List<Cell> cellsFromColumn = grid.stream().filter(c -> c.getBox() == box)
+                    .collect(Collectors.toList());
 
             validListOfCells(cellsFromColumn, validGrid);
         }
-        
+
         System.out.println("The grid is " + (validGrid ? "" : "not ") + "valid");
         return validGrid;
     }
