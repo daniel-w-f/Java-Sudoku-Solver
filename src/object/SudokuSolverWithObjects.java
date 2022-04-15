@@ -12,15 +12,15 @@ public class SudokuSolverWithObjects {
     public static void main(String[] args) {
 
         // if (validateGrid(startingGrid)) {
-        //     System.out.println("The grid is valid");
+        // System.out.println("The grid is valid");
         // } else {
-        //     System.out.println("The grid is not valid");
+        // System.out.println("The grid is not valid");
         // }
 
         ArrayList<Cell> grid = new ArrayList<Cell>();
         int row = 1;
         grid.add(new Cell(row, 1, 1));
-        grid.add(new Cell(row, 2, 2));
+        grid.add(new Cell(row, 2, 1));
         grid.add(new Cell(row, 3, 3));
         grid.add(new Cell(row, 4, 4));
         grid.add(new Cell(row, 5, 5));
@@ -112,7 +112,8 @@ public class SudokuSolverWithObjects {
         printGrid(grid);
         validateGrid(grid);
 
-        // List<Cell> rowOneCells = grid.stream().filter(c -> c.getRow() == 1).collect(Collectors.toList());
+        // List<Cell> rowOneCells = grid.stream().filter(c -> c.getRow() ==
+        // 1).collect(Collectors.toList());
 
         // System.out.println(grid);
         // System.out.println(rowOneCells);
@@ -144,26 +145,35 @@ public class SudokuSolverWithObjects {
         System.out.println("validateGrid");
         boolean validGrid = true;
         for (int i = 1; i < 10; i++) {
-            boolean validRow = true;
             System.out.print("Row: " + (i) + "\t");
-            
+
             int row = i;
             List<Cell> cellsFromRow = grid.stream().filter(c -> c.getRow() == row).collect(Collectors.toList());
 
-            Set<Integer> tempSet = new HashSet<>();
+            boolean validRow = validListOfCells(cellsFromRow);
 
-            for (int j = 0; j < cellsFromRow.size(); j++) {
-                System.out.print("Cell: " + (j + 1) + "\t");
-                Cell cell = cellsFromRow.get(j);
-                if (cell != null && cell.getValue() != null && !tempSet.add(cell.getValue())) {
-                    System.out.print("[" + cell + "] - already exists in row\t");
-                    validGrid = false;
-                    validRow = false;
-                }
-            }
-            System.out.println(tempSet);
-            System.out.println("The row is " + (validRow ? "" : "not ") + "valid");
+            // If the row is valid keep the current value for validGrid
+            validGrid = validRow ? validGrid : validRow;
         }
+        
+        System.out.println("The grid is " + (validGrid ? "" : "not ") + "valid");
         return validGrid;
+    }
+
+    public static boolean validListOfCells(List<Cell> cells) {
+        System.out.println("validListOfCells");
+        boolean valid = true;
+        Set<Integer> tempSet = new HashSet<>();
+        for (int i = 0; i < cells.size(); i++) {
+            System.out.print("Cell: " + (i + 1) + "\t");
+            Cell cell = cells.get(i);
+            if (cell != null && cell.getValue() != null && !tempSet.add(cell.getValue())) {
+                System.out.print("[" + cell + "] - already exists in list\t");
+                valid = false;
+            }
+        }
+        System.out.println(tempSet);
+        System.out.println("The list is " + (valid ? "" : "not ") + "valid");
+        return valid;
     }
 }
