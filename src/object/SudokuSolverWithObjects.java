@@ -50,63 +50,63 @@ public class SudokuSolverWithObjects {
         row = 4;
         grid.add(new Cell(row, 1, 2));
         grid.add(new Cell(row, 2, 3));
-        grid.add(new Cell(row, 3, 4));
+        grid.add(new Cell(row, 3, null));
         grid.add(new Cell(row, 4, 5));
-        grid.add(new Cell(row, 5, 6));
-        grid.add(new Cell(row, 6, 7));
+        grid.add(new Cell(row, 5, null));
+        grid.add(new Cell(row, 6, null));
         grid.add(new Cell(row, 7, 8));
-        grid.add(new Cell(row, 8, 9));
+        grid.add(new Cell(row, 8, null));
         grid.add(new Cell(row, 9, 1));
         row = 5;
-        grid.add(new Cell(row, 1, 3));
+        grid.add(new Cell(row, 1, null));
         grid.add(new Cell(row, 2, 4));
         grid.add(new Cell(row, 3, 5));
         grid.add(new Cell(row, 4, 6));
         grid.add(new Cell(row, 5, 7));
         grid.add(new Cell(row, 6, 8));
         grid.add(new Cell(row, 7, 9));
-        grid.add(new Cell(row, 8, 1));
+        grid.add(new Cell(row, 8, null));
         grid.add(new Cell(row, 9, 2));
         row = 6;
         grid.add(new Cell(row, 1, null));
         grid.add(new Cell(row, 2, 7));
         grid.add(new Cell(row, 3, null));
-        grid.add(new Cell(row, 4, 1));
+        grid.add(new Cell(row, 4, 2));
         grid.add(new Cell(row, 5, null));
-        grid.add(new Cell(row, 6, 3));
+        grid.add(new Cell(row, 6, 1));
         grid.add(new Cell(row, 7, null));
-        grid.add(new Cell(row, 8, 5));
+        grid.add(new Cell(row, 8, 3));
         grid.add(new Cell(row, 9, null));
         row = 7;
         grid.add(new Cell(row, 1, 9));
         grid.add(new Cell(row, 2, null));
-        grid.add(new Cell(row, 3, 3));
-        grid.add(new Cell(row, 4, 4));
+        grid.add(new Cell(row, 3, 8));
+        grid.add(new Cell(row, 4, 3));
         grid.add(new Cell(row, 5, null));
-        grid.add(new Cell(row, 6, 6));
-        grid.add(new Cell(row, 7, 7));
+        grid.add(new Cell(row, 6, 4));
+        grid.add(new Cell(row, 7, 2));
         grid.add(new Cell(row, 8, null));
-        grid.add(new Cell(row, 9, 9));
+        grid.add(new Cell(row, 9, null));
         row = 8;
         grid.add(new Cell(row, 1, null));
         grid.add(new Cell(row, 2, 1));
-        grid.add(new Cell(row, 3, 6));
-        grid.add(new Cell(row, 4, 7));
+        grid.add(new Cell(row, 3, null));
+        grid.add(new Cell(row, 4, 8));
         grid.add(new Cell(row, 5, null));
-        grid.add(new Cell(row, 6, 9));
-        grid.add(new Cell(row, 7, 1));
-        grid.add(new Cell(row, 8, 2));
+        grid.add(new Cell(row, 6, 2));
+        grid.add(new Cell(row, 7, null));
+        grid.add(new Cell(row, 8, null));
         grid.add(new Cell(row, 9, null));
         row = 9;
         grid.add(new Cell(row, 1, null));
         grid.add(new Cell(row, 2, null));
-        grid.add(new Cell(row, 3, null));
-        grid.add(new Cell(row, 4, 1));
-        grid.add(new Cell(row, 5, 2));
-        grid.add(new Cell(row, 6, 3));
+        grid.add(new Cell(row, 3, 2));
+        grid.add(new Cell(row, 4, 9));
+        grid.add(new Cell(row, 5, 1));
+        grid.add(new Cell(row, 6, 5));
         grid.add(new Cell(row, 7, null));
         grid.add(new Cell(row, 8, null));
-        grid.add(new Cell(row, 9, 6));
+        grid.add(new Cell(row, 9, 4));
 
         printGrid(grid);
         validateGrid(grid);
@@ -170,6 +170,19 @@ public class SudokuSolverWithObjects {
 
             // If the column is valid keep the current value for validGrid
             validGrid = validColumn ? validGrid : validColumn;
+        }
+
+        // check boxes
+        for (int i = 1; i < 10; i++) {
+            System.out.print("Box: " + (i) + "\t");
+
+            int box = i;
+            List<Cell> cellsFromColumn = grid.stream().filter(c -> c.getBox() == box).collect(Collectors.toList());
+
+            boolean validBox = validListOfCells(cellsFromColumn);
+
+            // If the box is valid keep the current value for validGrid
+            validGrid = validBox ? validGrid : validBox;
         }
         
         System.out.println("The grid is " + (validGrid ? "" : "not ") + "valid");
