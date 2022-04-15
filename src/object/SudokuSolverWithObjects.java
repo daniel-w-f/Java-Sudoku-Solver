@@ -110,11 +110,12 @@ public class SudokuSolverWithObjects {
         grid.add(new Cell(row, 9, 6));
 
         printGrid(grid);
+        validateGrid(grid);
 
-        List<Cell> rowOneCells = grid.stream().filter(c -> c.getRow() == 1).collect(Collectors.toList());
+        // List<Cell> rowOneCells = grid.stream().filter(c -> c.getRow() == 1).collect(Collectors.toList());
 
-        System.out.println(grid);
-        System.out.println(rowOneCells);
+        // System.out.println(grid);
+        // System.out.println(rowOneCells);
     }
 
     public static void printGrid(ArrayList<Cell> grid) {
@@ -139,26 +140,28 @@ public class SudokuSolverWithObjects {
         }
     }
 
-    public static boolean validateGrid(ArrayList<ArrayList<Integer>> grid) {
+    public static boolean validateGrid(ArrayList<Cell> grid) {
         System.out.println("validateGrid");
         boolean validGrid = true;
-        for (int i = 0; i < grid.size(); i++) {
+        for (int i = 1; i < 10; i++) {
             boolean validRow = true;
-            System.out.print("Row: " + (i + 1) + "\t");
-
-            ArrayList<Integer> row = grid.get(i);
+            System.out.print("Row: " + (i) + "\t");
+            
+            int row = i;
+            List<Cell> cellsFromRow = grid.stream().filter(c -> c.getRow() == row).collect(Collectors.toList());
 
             Set<Integer> tempSet = new HashSet<>();
 
-            for (int j = 0; j < row.size(); j++) {
+            for (int j = 0; j < cellsFromRow.size(); j++) {
                 System.out.print("Cell: " + (j + 1) + "\t");
-                Integer cell = row.get(j);
-                if (cell != null && !tempSet.add(cell)) {
+                Cell cell = cellsFromRow.get(j);
+                if (cell != null && cell.getValue() != null && !tempSet.add(cell.getValue())) {
                     System.out.print("[" + cell + "] - already exists in row\t");
                     validGrid = false;
                     validRow = false;
                 }
             }
+            System.out.println(tempSet);
             System.out.println("The row is " + (validRow ? "" : "not ") + "valid");
         }
         return validGrid;
