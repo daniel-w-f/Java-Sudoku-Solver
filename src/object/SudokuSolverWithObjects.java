@@ -153,10 +153,7 @@ public class SudokuSolverWithObjects {
             int row = i;
             List<Cell> cellsFromRow = grid.stream().filter(c -> c.getRow() == row).collect(Collectors.toList());
 
-            boolean validRow = validListOfCells(cellsFromRow);
-
-            // If the row is valid keep the current value for validGrid
-            validGrid = validRow ? validGrid : validRow;
+            validListOfCells(cellsFromRow, validGrid);
         }
 
         // check columns
@@ -166,10 +163,7 @@ public class SudokuSolverWithObjects {
             int column = i;
             List<Cell> cellsFromColumn = grid.stream().filter(c -> c.getColumn() == column).collect(Collectors.toList());
 
-            boolean validColumn = validListOfCells(cellsFromColumn);
-
-            // If the column is valid keep the current value for validGrid
-            validGrid = validColumn ? validGrid : validColumn;
+            validListOfCells(cellsFromColumn, validGrid);
         }
 
         // check boxes
@@ -179,17 +173,14 @@ public class SudokuSolverWithObjects {
             int box = i;
             List<Cell> cellsFromColumn = grid.stream().filter(c -> c.getBox() == box).collect(Collectors.toList());
 
-            boolean validBox = validListOfCells(cellsFromColumn);
-
-            // If the box is valid keep the current value for validGrid
-            validGrid = validBox ? validGrid : validBox;
+            validListOfCells(cellsFromColumn, validGrid);
         }
         
         System.out.println("The grid is " + (validGrid ? "" : "not ") + "valid");
         return validGrid;
     }
 
-    public static boolean validListOfCells(List<Cell> cells) {
+    public static boolean validListOfCells(List<Cell> cells, boolean validGrid) {
         System.out.println("validListOfCells");
         boolean valid = true;
         Set<Integer> tempSet = new HashSet<>();
@@ -203,6 +194,10 @@ public class SudokuSolverWithObjects {
         }
         System.out.print(tempSet);
         System.out.println("\tThe list is " + (valid ? "" : "not ") + "valid");
+
+        // If the list is valid keep the current value for validGrid
+        validGrid = valid ? validGrid : valid;
+
         return valid;
     }
 }
