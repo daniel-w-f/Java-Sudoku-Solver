@@ -27,7 +27,7 @@ public class SudokuSolverWithObjects {
         grid.add(new Cell(row, 5, 4));
         grid.add(new Cell(row, 6, 6));
         grid.add(new Cell(row, 7, 8));
-        grid.add(new Cell(row, 8,3));
+        grid.add(new Cell(row, 8, 3));
         grid.add(new Cell(row, 9, 1));
         row = 2;
         grid.add(new Cell(row, 1, 2));
@@ -190,6 +190,10 @@ public class SudokuSolverWithObjects {
         return grid.stream().filter(c -> c.getRow() == row).collect(Collectors.toList());
     }
 
+    public static List<Cell> getEmptyCells(ArrayList<Cell> grid) {
+        return grid.stream().filter(c -> c.getValue() == null).collect(Collectors.toList());
+    }
+
     public static boolean validListOfCells(List<Cell> cells, boolean validGrid) {
         System.out.println("validListOfCells");
         boolean valid = true;
@@ -214,30 +218,44 @@ public class SudokuSolverWithObjects {
     private static void findPossibleValues(ArrayList<Cell> grid) {
         System.out.println("validListOfCells");
 
-        for (Cell cell : grid) {
+        int emptyCells = -1;
 
-            if (cell.getValue() == null) {
-                System.out.print(cell.getDescription());
+        while (emptyCells != 0) {
 
-                List<Integer> possibleValues = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9)
-                        .collect(Collectors.toList());
+            for (Cell cell : grid) {
 
-                removePossibleValues(possibleValues, getCellsForBox(grid, cell.getBox()));
-                removePossibleValues(possibleValues, getCellsForColumn(grid, cell.getColumn()));
-                removePossibleValues(possibleValues, getCellsForRow(grid, cell.getRow()));
+                if (cell.getValue() == null) {
+                    System.out.print(cell.getDescription());
 
-                cell.setPossibleValues(possibleValues);
+                    List<Integer> possibleValues = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9)
+                            .collect(Collectors.toList());
 
-                System.out.println(" | possibleValues:" + possibleValues);
+                    removePossibleValues(possibleValues, getCellsForBox(grid, cell.getBox()));
+                    removePossibleValues(possibleValues, getCellsForColumn(grid, cell.getColumn()));
+                    removePossibleValues(possibleValues, getCellsForRow(grid, cell.getRow()));
+
+                    cell.setPossibleValues(possibleValues);
+
+                    System.out.println(" | possibleValues:" + possibleValues);
+                }
             }
+
+            printGrid(grid);
+            System.out.println();
+
+            // for (Cell cell : grid) {
+            // System.out.println(cell.getDescription());
+            // }
+
+            int tmp = getEmptyCells(grid).size();
+            if (tmp == emptyCells) {
+                System.out.println("Abort, not better than before. Impending endless loop");
+                break;
+            }
+            emptyCells = tmp;
         }
 
-        printGrid(grid);
-
-        for (Cell cell : grid) {
-            System.out.println(cell.getDescription());
-        }
-        
+        System.out.println("solved");
     }
 
     private static void removePossibleValues(List<Integer> possibleValues, List<Cell> cells) {
