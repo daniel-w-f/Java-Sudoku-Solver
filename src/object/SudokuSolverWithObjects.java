@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SudokuSolverWithObjects {
 
@@ -216,9 +217,25 @@ public class SudokuSolverWithObjects {
         for (Cell cell : grid) {
             System.out.println(cell.getDescription());
 
-            List<Integer> possibleValues = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            // List<Integer> possibleValues = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-            
+            // List<Cell> boxCells = getCellsForBox(grid, cell.getBox());
+            // List<Integer> boxNumbers = boxCells.stream().map(Cell::getValue)
+            // .collect(Collectors.toList());
+
+            // possibleValues.removeAll(boxNumbers);
+
+            // List possibleValues = Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            List<Integer> possibleValues = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9)
+                    .collect(Collectors.toList());
+
+            List<Cell> boxCells = getCellsForBox(grid, cell.getBox());
+            List<Integer> boxNumbers = boxCells.stream().map(Cell::getValue)
+                    .collect(Collectors.toList());
+
+            possibleValues.removeAll(boxNumbers);
+
+            System.out.println(possibleValues);
         }
     }
 }
