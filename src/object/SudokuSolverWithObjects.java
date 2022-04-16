@@ -226,6 +226,8 @@ public class SudokuSolverWithObjects {
                 removePossibleValues(possibleValues, getCellsForColumn(grid, cell.getColumn()));
                 removePossibleValues(possibleValues, getCellsForRow(grid, cell.getRow()));
 
+                cell.setPossibleValues(possibleValues);
+
                 System.out.println(" | possibleValues:" + possibleValues);
             }
         }

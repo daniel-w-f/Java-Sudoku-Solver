@@ -1,6 +1,7 @@
 package object;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Cell {
 
@@ -20,7 +21,7 @@ public class Cell {
     public int column;
     public Integer value;
     public int box;
-    public ArrayList<Integer> possibleValues;
+    public List<Integer> possibleValues;
 
     public int getRow() {
         return row;
@@ -54,11 +55,11 @@ public class Cell {
         this.box = box;
     }
 
-    public ArrayList<Integer> getPossibleValues() {
+    public List<Integer> getPossibleValues() {
         return possibleValues;
     }
 
-    public void setPossibleValues(ArrayList<Integer> possibleValues) {
+    public void setPossibleValues(List<Integer> possibleValues) {
         this.possibleValues = possibleValues;
     }
 
