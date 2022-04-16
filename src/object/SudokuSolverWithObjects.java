@@ -231,6 +231,13 @@ public class SudokuSolverWithObjects {
                 System.out.println(" | possibleValues:" + possibleValues);
             }
         }
+
+        printGrid(grid);
+
+        for (Cell cell : grid) {
+            System.out.println(cell.getDescription());
+        }
+        
     }
 
     private static void removePossibleValues(List<Integer> possibleValues, List<Cell> cells) {

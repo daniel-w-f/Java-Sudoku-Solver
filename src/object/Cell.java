@@ -60,6 +60,11 @@ public class Cell {
     }
 
     public void setPossibleValues(List<Integer> possibleValues) {
+
+        if (possibleValues.size() == 1) {
+            this.value = possibleValues.get(0);
+        }
+
         this.possibleValues = possibleValues;
     }
 
