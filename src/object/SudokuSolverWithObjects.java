@@ -80,7 +80,7 @@ public class SudokuSolverWithObjects {
         grid.add(new Cell(row, 8, 7));
         grid.add(new Cell(row, 9, null));
         row = 7;
-        grid.add(new Cell(row, 1, null));
+        grid.add(new Cell(row, 1, 8));
         grid.add(new Cell(row, 2, 6));
         grid.add(new Cell(row, 3, 9));
         grid.add(new Cell(row, 4, null));
@@ -101,7 +101,7 @@ public class SudokuSolverWithObjects {
         grid.add(new Cell(row, 9, null));
         row = 9;
         grid.add(new Cell(row, 1, 3));
-        grid.add(new Cell(row, 2, null));
+        grid.add(new Cell(row, 2, 2));
         grid.add(new Cell(row, 3, 4));
         grid.add(new Cell(row, 4, 8));
         grid.add(new Cell(row, 5, null));
