@@ -217,25 +217,20 @@ public class SudokuSolverWithObjects {
         for (Cell cell : grid) {
             System.out.println(cell.getDescription());
 
-            // List<Integer> possibleValues = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
-
-            // List<Cell> boxCells = getCellsForBox(grid, cell.getBox());
-            // List<Integer> boxNumbers = boxCells.stream().map(Cell::getValue)
-            // .collect(Collectors.toList());
-
-            // possibleValues.removeAll(boxNumbers);
-
-            // List possibleValues = Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9);
             List<Integer> possibleValues = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9)
                     .collect(Collectors.toList());
 
-            List<Cell> boxCells = getCellsForBox(grid, cell.getBox());
-            List<Integer> boxNumbers = boxCells.stream().map(Cell::getValue)
-                    .collect(Collectors.toList());
+            removePossibleValues(possibleValues, getCellsForBox(grid, cell.getBox()));
+            removePossibleValues(possibleValues, getCellsForColumn(grid, cell.getColumn()));
+            removePossibleValues(possibleValues, getCellsForRow(grid, cell.getRow()));
 
-            possibleValues.removeAll(boxNumbers);
-
-            System.out.println(possibleValues);
+            System.out.println("possibleValues:" + possibleValues);
         }
+    }
+
+    private static void removePossibleValues(List<Integer> possibleValues, List<Cell> cells) {
+        List<Integer> numbers = cells.stream().map(Cell::getValue).collect(Collectors.toList());
+        possibleValues.removeAll(numbers);
+        // System.out.print("numbers to remove:" + numbers);
     }
 }
