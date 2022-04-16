@@ -1,6 +1,7 @@
 package object;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -110,9 +111,7 @@ public class SudokuSolverWithObjects {
 
         printGrid(grid);
         validateGrid(grid);
-
-        // Todo: Add method to find possible values for a cell based on row, column and
-        // box check
+        findPossibleValues(grid);
     }
 
     public static void printGrid(ArrayList<Cell> grid) {
@@ -149,8 +148,7 @@ public class SudokuSolverWithObjects {
             System.out.print("Row: " + (i) + "\t");
 
             int row = i;
-            List<Cell> cellsFromRow = grid.stream().filter(c -> c.getRow() == row)
-                    .collect(Collectors.toList());
+            List<Cell> cellsFromRow = getCellsForRow(grid, row);
 
             validListOfCells(cellsFromRow, validGrid);
         }
@@ -160,8 +158,7 @@ public class SudokuSolverWithObjects {
             System.out.print("Column: " + (i) + "\t");
 
             int column = i;
-            List<Cell> cellsFromColumn = grid.stream().filter(c -> c.getColumn() == column)
-                    .collect(Collectors.toList());
+            List<Cell> cellsFromColumn = getCellsForColumn(grid, column);
 
             validListOfCells(cellsFromColumn, validGrid);
         }
@@ -171,14 +168,25 @@ public class SudokuSolverWithObjects {
             System.out.print("Box: " + (i) + "\t");
 
             int box = i;
-            List<Cell> cellsFromColumn = grid.stream().filter(c -> c.getBox() == box)
-                    .collect(Collectors.toList());
+            List<Cell> cellsFromColumn = getCellsForBox(grid, box);
 
             validListOfCells(cellsFromColumn, validGrid);
         }
 
         System.out.println("The grid is " + (validGrid ? "" : "not ") + "valid");
         return validGrid;
+    }
+
+    public static List<Cell> getCellsForBox(ArrayList<Cell> grid, Integer box) {
+        return grid.stream().filter(c -> c.getBox() == box).collect(Collectors.toList());
+    }
+
+    public static List<Cell> getCellsForColumn(ArrayList<Cell> grid, Integer column) {
+        return grid.stream().filter(c -> c.getColumn() == column).collect(Collectors.toList());
+    }
+
+    public static List<Cell> getCellsForRow(ArrayList<Cell> grid, Integer row) {
+        return grid.stream().filter(c -> c.getRow() == row).collect(Collectors.toList());
     }
 
     public static boolean validListOfCells(List<Cell> cells, boolean validGrid) {
@@ -200,5 +208,17 @@ public class SudokuSolverWithObjects {
         validGrid = valid ? validGrid : valid;
 
         return valid;
+    }
+
+    private static void findPossibleValues(ArrayList<Cell> grid) {
+        System.out.println("validListOfCells");
+
+        for (Cell cell : grid) {
+            System.out.println(cell.getDescription());
+
+            List<Integer> possibleValues = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+            
+        }
     }
 }
