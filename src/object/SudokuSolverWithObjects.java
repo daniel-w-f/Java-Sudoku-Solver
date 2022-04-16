@@ -215,16 +215,20 @@ public class SudokuSolverWithObjects {
         System.out.println("validListOfCells");
 
         for (Cell cell : grid) {
-            System.out.println(cell.getDescription());
+            System.out.print(cell.getDescription());
 
-            List<Integer> possibleValues = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9)
-                    .collect(Collectors.toList());
+            if (cell.getValue() == null) {
 
-            removePossibleValues(possibleValues, getCellsForBox(grid, cell.getBox()));
-            removePossibleValues(possibleValues, getCellsForColumn(grid, cell.getColumn()));
-            removePossibleValues(possibleValues, getCellsForRow(grid, cell.getRow()));
+                List<Integer> possibleValues = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9)
+                        .collect(Collectors.toList());
 
-            System.out.println("possibleValues:" + possibleValues);
+                removePossibleValues(possibleValues, getCellsForBox(grid, cell.getBox()));
+                removePossibleValues(possibleValues, getCellsForColumn(grid, cell.getColumn()));
+                removePossibleValues(possibleValues, getCellsForRow(grid, cell.getRow()));
+
+                System.out.print(" | possibleValues:" + possibleValues);
+            }
+            System.out.println();
         }
     }
 
