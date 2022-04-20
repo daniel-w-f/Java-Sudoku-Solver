@@ -233,6 +233,8 @@ public class SudokuSolverWithObjects {
                     removePossibleValues(possibleValues, getCellsForBox(grid, cell.getBox()));
                     removePossibleValues(possibleValues, getCellsForColumn(grid, cell.getColumn()));
                     removePossibleValues(possibleValues, getCellsForRow(grid, cell.getRow()));
+                    // Todo: Check if there is only one cell for a value per Box/Column/Row
+                    //       so ignore other possible values for that cell.
 
                     cell.setPossibleValues(possibleValues);
 
