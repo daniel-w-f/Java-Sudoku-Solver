@@ -2,6 +2,8 @@ package object;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -190,8 +192,8 @@ public class SudokuSolverWithObjects {
         return grid.stream().filter(c -> c.getRow() == row).collect(Collectors.toList());
     }
 
-    public static List<Cell> getEmptyCells(ArrayList<Cell> grid) {
-        return grid.stream().filter(c -> c.getValue() == null).collect(Collectors.toList());
+    public static List<Cell> getEmptyCells(List<Cell> list) {
+        return list.stream().filter(c -> c.getValue() == null).collect(Collectors.toList());
     }
 
     public static boolean validListOfCells(List<Cell> cells, boolean validGrid) {
@@ -215,6 +217,32 @@ public class SudokuSolverWithObjects {
         return valid;
     }
 
+    private static void frequency(List<Cell> cells) {
+        System.out.println("\nfrequency");
+
+        // List<Integer> numbers = cells.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        // List<Integer> numbers = cells.stream().flatMapToInt(Cell::getPossibleValues).collect(Collectors.toList());
+        // List<Integer> joinedList = (List<Integer>) Collection.stream().flatMap(Collection::stream).collect(Collectors.toList());
+
+        // System.out.println(joinedList);
+
+        List<Integer> allPossibleNumbers = new ArrayList<Integer>();
+
+        for (Cell cell : cells) {
+            if (cell.getPossibleValues() != null) {
+                allPossibleNumbers.addAll(cell.getPossibleValues());
+            }
+        }
+
+        List<Integer> uniqueNumbers = allPossibleNumbers.stream().distinct().collect(Collectors.toList());
+
+        for (Integer integer : uniqueNumbers) {
+            System.out.println("integer: "+ integer +" | frequency: "+ Collections.frequency(allPossibleNumbers, integer));
+        }
+
+        System.out.println(allPossibleNumbers);
+    }
+
     private static void findPossibleValues(ArrayList<Cell> grid) {
         System.out.println("validListOfCells");
 
@@ -230,11 +258,12 @@ public class SudokuSolverWithObjects {
                     List<Integer> possibleValues = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9)
                             .collect(Collectors.toList());
 
+                    // Todo: Performance improvement to remove empty cells from list?
                     removePossibleValues(possibleValues, getCellsForBox(grid, cell.getBox()));
                     removePossibleValues(possibleValues, getCellsForColumn(grid, cell.getColumn()));
                     removePossibleValues(possibleValues, getCellsForRow(grid, cell.getRow()));
                     // Todo: Check if there is only one cell for a value per Box/Column/Row
-                    //       so ignore other possible values for that cell.
+                    // so ignore other possible values for that cell.
 
                     cell.setPossibleValues(possibleValues);
 
@@ -255,6 +284,19 @@ public class SudokuSolverWithObjects {
                 break;
             }
             emptyCells = tmp;
+        }       
+
+        System.out.println("Boxes");
+        for (int i = 1; i < 10; i++) {            
+            frequency(getEmptyCells(getCellsForBox(grid, i)));
+        }
+        System.out.println("Columns");
+        for (int i = 1; i < 10; i++) {            
+            frequency(getEmptyCells(getCellsForColumn(grid, i)));
+        }
+        System.out.println("Rows");
+        for (int i = 1; i < 10; i++) {            
+            frequency(getEmptyCells(getCellsForRow(grid, i)));
         }
 
         System.out.println("solved");
