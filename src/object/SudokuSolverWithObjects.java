@@ -218,56 +218,6 @@ public class SudokuSolverWithObjects {
         return valid;
     }
 
-    private static void frequency(List<Cell> cells) {
-        System.out.println("\nfrequency");
-
-        // Todo: Make nice way to get a combined list of all possible numbers in a nice way
-        // List<Integer> numbers = cells.stream().flatMap(Collection::stream).collect(Collectors.toList());
-        // List<Integer> numbers = cells.stream().flatMapToInt(Cell::getPossibleValues).collect(Collectors.toList());
-        // List<Integer> joinedList = (List<Integer>) Collection.stream().flatMap(Collection::stream).collect(Collectors.toList());
-        // System.out.println(joinedList);
-
-        List<Integer> allPossibleNumbers = new ArrayList<Integer>();
-        for (Cell cell : cells) {
-            if (cell.getPossibleValues() != null) {
-                allPossibleNumbers.addAll(cell.getPossibleValues());
-            }
-        }
-        List<Integer> uniqueNumbers = allPossibleNumbers.stream().distinct().collect(Collectors.toList());
-
-        boolean foundSomething = false;
-
-        for (Integer integer : uniqueNumbers) {
-            System.out.println("integer: "+ integer +" | frequency: "+ Collections.frequency(allPossibleNumbers, integer));
-            if (Collections.frequency(allPossibleNumbers, integer) == 1) {
-                System.out.println("- - - - only 1 place for the number: "+ integer );
-                // Todo: find cell that belongs to this number that only occures once
-                // List<Cell> list = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).collect(Collectors.toList());
-                // System.out.println(cells.stream().filter(c -> c.getPossibleValues().contains(integer)));
-                // System.out.println(cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst());
-                // Optional<Cell> cell = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst();
-                // Cell c = cell.get();
-                // System.out.println(c.getDescription());
-                Cell cell = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst().get();
-                System.out.println(cell.getDescription());
-
-                cell.setValue(integer);
-                // as soon as 1 value is set all the other values must be reevaluated.....!!!
-
-                // keep track of this, but continue to find more 
-                foundSomething = true;
-                
-                System.out.println(cell.getDescription());
-
-                // System.out.println(list.get(0).getDescription());
-            }
-        }
-
-        System.out.println("foundSomething: "+ foundSomething);
-
-        System.out.println(allPossibleNumbers);
-    }
-
     private static void findPossibleValues(ArrayList<Cell> grid) {
         System.out.println("validListOfCells");
 
@@ -311,22 +261,87 @@ public class SudokuSolverWithObjects {
             emptyCells = tmp;
         }       
 
+        findHiddenSingels(grid);
+
+        System.out.println("solved");
+    }
+
+    private static void findHiddenSingels(ArrayList<Cell> grid) {
         System.out.println("Boxes");
         for (int i = 1; i < 10; i++) {            
-            frequency(getEmptyCells(getCellsForBox(grid, i)));
+            if ( frequency(getEmptyCells(getCellsForBox(grid, i))) ) {
+                findPossibleValues(grid);
+                return;
+            }
         }
         System.out.println("Columns");
         for (int i = 1; i < 10; i++) {            
-            frequency(getEmptyCells(getCellsForColumn(grid, i)));
+            if ( frequency(getEmptyCells(getCellsForColumn(grid, i))) ) {
+                findPossibleValues(grid);
+                return;
+            }
         }
         System.out.println("Rows");
         for (int i = 1; i < 10; i++) {            
-            frequency(getEmptyCells(getCellsForRow(grid, i)));
+            if ( frequency(getEmptyCells(getCellsForRow(grid, i))) ) {
+                findPossibleValues(grid);
+                return;
+            }
         }
 
         printGrid(grid);
+    }
 
-        System.out.println("solved");
+    private static boolean frequency(List<Cell> cells) {
+        System.out.println("\nfrequency");
+
+        // Todo: Make nice way to get a combined list of all possible numbers in a nice way
+        // List<Integer> numbers = cells.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        // List<Integer> numbers = cells.stream().flatMapToInt(Cell::getPossibleValues).collect(Collectors.toList());
+        // List<Integer> joinedList = (List<Integer>) Collection.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        // System.out.println(joinedList);
+
+        List<Integer> allPossibleNumbers = new ArrayList<Integer>();
+        for (Cell cell : cells) {
+            if (cell.getPossibleValues() != null) {
+                allPossibleNumbers.addAll(cell.getPossibleValues());
+            }
+        }
+        List<Integer> uniqueNumbers = allPossibleNumbers.stream().distinct().collect(Collectors.toList());
+
+        boolean foundSomething = false;
+
+        for (Integer integer : uniqueNumbers) {
+            // System.out.println("integer: "+ integer +" | frequency: "+ Collections.frequency(allPossibleNumbers, integer));
+            if (Collections.frequency(allPossibleNumbers, integer) == 1) {
+                System.out.println("- - - - only 1 place for the number: "+ integer );
+                // Todo: find cell that belongs to this number that only occures once
+                // List<Cell> list = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).collect(Collectors.toList());
+                // System.out.println(cells.stream().filter(c -> c.getPossibleValues().contains(integer)));
+                // System.out.println(cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst());
+                // Optional<Cell> cell = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst();
+                // Cell c = cell.get();
+                // System.out.println(c.getDescription());
+                Cell cell = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst().get();
+                System.out.println(cell.getDescription());
+
+                cell.setValue(integer);
+                // as soon as 1 value is set all the other values must be reevaluated.....!!!
+
+                // keep track of this, but continue to find more 
+                foundSomething = true;
+                
+                System.out.println(cell.getDescription());
+
+                // System.out.println(list.get(0).getDescription());
+            }
+        }
+
+        System.out.println("foundSomething: "+ foundSomething);
+
+        System.out.println(allPossibleNumbers);
+
+        return foundSomething;
     }
 
     private static void removePossibleValues(List<Integer> possibleValues, List<Cell> cells) {
