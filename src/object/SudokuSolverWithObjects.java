@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -234,12 +235,35 @@ public class SudokuSolverWithObjects {
         }
         List<Integer> uniqueNumbers = allPossibleNumbers.stream().distinct().collect(Collectors.toList());
 
+        boolean foundSomething = false;
+
         for (Integer integer : uniqueNumbers) {
             System.out.println("integer: "+ integer +" | frequency: "+ Collections.frequency(allPossibleNumbers, integer));
             if (Collections.frequency(allPossibleNumbers, integer) == 1) {
                 System.out.println("- - - - only 1 place for the number: "+ integer );
+                // Todo: find cell that belongs to this number that only occures once
+                // List<Cell> list = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).collect(Collectors.toList());
+                // System.out.println(cells.stream().filter(c -> c.getPossibleValues().contains(integer)));
+                // System.out.println(cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst());
+                // Optional<Cell> cell = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst();
+                // Cell c = cell.get();
+                // System.out.println(c.getDescription());
+                Cell cell = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst().get();
+                System.out.println(cell.getDescription());
+
+                cell.setValue(integer);
+                // as soon as 1 value is set all the other values must be reevaluated.....!!!
+
+                // keep track of this, but continue to find more 
+                foundSomething = true;
+                
+                System.out.println(cell.getDescription());
+
+                // System.out.println(list.get(0).getDescription());
             }
         }
+
+        System.out.println("foundSomething: "+ foundSomething);
 
         System.out.println(allPossibleNumbers);
     }
@@ -299,6 +323,8 @@ public class SudokuSolverWithObjects {
         for (int i = 1; i < 10; i++) {            
             frequency(getEmptyCells(getCellsForRow(grid, i)));
         }
+
+        printGrid(grid);
 
         System.out.println("solved");
     }
