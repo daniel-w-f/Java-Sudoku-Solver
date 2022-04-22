@@ -126,6 +126,15 @@ public class SudokuSolverWithObjects {
             // possible values for that cell.
             findHiddenSingels(grid);
 
+            // Locked Candidates Type 1 (Pointing): If in a block all candidates of a certain digit 
+            // are confined to a row or column, that digit cannot appear outside of that block in 
+            // that row or column.
+            // Locked Candidates Type 2 (Claiming): Locked Candidates Type 2 works exactly the 
+            // other way round: If in a row (or column) all candidates of a certain digit are 
+            // confined to one block, that candidate that be eliminated from all other cells in 
+            // that block.
+            findLockedCandidates(grid);
+
             printGrid(grid);
 
             int tmp = getEmptyCells(grid).size();
@@ -140,6 +149,27 @@ public class SudokuSolverWithObjects {
             System.out.println("Solved! :-)");
         } else {
             System.out.println("Not solved :-(");
+        }
+    }
+
+    private static void findLockedCandidates(ArrayList<Cell> grid) {
+        /*
+        - filter grid, to get only empty cells
+        - type 1
+            - get all cells from one box
+            - get unique list of numbers of possible values for the cells
+            - iterate over numbers
+            - break loop when you find the same number in a different row
+            - if loop ended without breaking, all occourences of this number are in the same row
+                that means the number cannot occour in the same row, within a different box
+            - find cells in other boxes container that number
+            - remove the number from the list of possible values
+        */
+        List<Cell> emptyCells = getEmptyCells(grid);
+        for (int i = 1; i < 10; i++) {
+            List<Cell> boxCells = getCellsForType(emptyCells, "Box", i);
+            List<Integer> allPossibleNumbers = getAllPossibleNumbers(boxCells);
+            List<Integer> uniqueNumbers = allPossibleNumbers.stream().distinct().collect(Collectors.toList());
         }
     }
 
@@ -186,17 +216,17 @@ public class SudokuSolverWithObjects {
         }
     }
 
-    public static List<Cell> getCellsForBox(ArrayList<Cell> grid, Integer box) {
+    public static List<Cell> getCellsForBox(List<Cell> cells, Integer box) {
         // Todo: How to use a variable for the filter? e.g. "c.getRow() == row"
-        return grid.stream().filter(c -> c.getBox() == box).collect(Collectors.toList());
+        return cells.stream().filter(c -> c.getBox() == box).collect(Collectors.toList());
     }
 
-    public static List<Cell> getCellsForColumn(ArrayList<Cell> grid, Integer column) {
-        return grid.stream().filter(c -> c.getColumn() == column).collect(Collectors.toList());
+    public static List<Cell> getCellsForColumn(List<Cell> cells, Integer column) {
+        return cells.stream().filter(c -> c.getColumn() == column).collect(Collectors.toList());
     }
 
-    public static List<Cell> getCellsForRow(ArrayList<Cell> grid, Integer row) {
-        return grid.stream().filter(c -> c.getRow() == row).collect(Collectors.toList());
+    public static List<Cell> getCellsForRow(List<Cell> cells, Integer row) {
+        return cells.stream().filter(c -> c.getRow() == row).collect(Collectors.toList());
     }
 
     public static List<Cell> getEmptyCells(List<Cell> list) {
@@ -292,14 +322,14 @@ public class SudokuSolverWithObjects {
         return false;
     }
 
-    private static List<Cell> getCellsForType(ArrayList<Cell> grid, String type, int i) {
+    private static List<Cell> getCellsForType(List<Cell> cells, String type, int i) {
         switch (type) {
             case "Box":
-                return getCellsForBox(grid, i);
+                return getCellsForBox(cells, i);
             case "Column":
-                return getCellsForColumn(grid, i);
+                return getCellsForColumn(cells, i);
             case "Row":
-                return getCellsForRow(grid, i);
+                return getCellsForRow(cells, i);
             default:
                 return null;
         }
@@ -313,12 +343,7 @@ public class SudokuSolverWithObjects {
         // List<Integer> numbers = cells.stream().flatMapToInt(Cell::getPossibleValues).collect(Collectors.toList());
         // List<Integer> joinedList = (List<Integer>) Collection.stream().flatMap(Collection::stream).collect(Collectors.toList());
 
-        List<Integer> allPossibleNumbers = new ArrayList<Integer>();
-        for (Cell cell : cells) {
-            if (cell.getPossibleValues() != null) {
-                allPossibleNumbers.addAll(cell.getPossibleValues());
-            }
-        }
+        List<Integer> allPossibleNumbers = getAllPossibleNumbers(cells);
         List<Integer> uniqueNumbers = allPossibleNumbers.stream().distinct().collect(Collectors.toList());
 
         boolean foundSomething = false;
@@ -346,6 +371,16 @@ public class SudokuSolverWithObjects {
         System.out.println(allPossibleNumbers);
 
         return foundSomething;
+    }
+
+    private static List<Integer> getAllPossibleNumbers(List<Cell> cells) {
+        List<Integer> allPossibleNumbers = new ArrayList<Integer>();
+        for (Cell cell : cells) {
+            if (cell.getPossibleValues() != null) {
+                allPossibleNumbers.addAll(cell.getPossibleValues());
+            }
+        }
+        return allPossibleNumbers;
     }
 
     private static void removePossibleValues(List<Integer> possibleValues, List<Cell> cells) {
