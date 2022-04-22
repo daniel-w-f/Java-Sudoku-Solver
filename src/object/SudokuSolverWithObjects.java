@@ -267,29 +267,59 @@ public class SudokuSolverWithObjects {
     }
 
     private static void findHiddenSingels(ArrayList<Cell> grid) {
-        System.out.println("Boxes");
-        for (int i = 1; i < 10; i++) {            
-            if ( frequency(getEmptyCells(getCellsForBox(grid, i))) ) {
-                findPossibleValues(grid);
-                return;
-            }
-        }
-        System.out.println("Columns");
-        for (int i = 1; i < 10; i++) {            
-            if ( frequency(getEmptyCells(getCellsForColumn(grid, i))) ) {
-                findPossibleValues(grid);
-                return;
-            }
-        }
-        System.out.println("Rows");
-        for (int i = 1; i < 10; i++) {            
-            if ( frequency(getEmptyCells(getCellsForRow(grid, i))) ) {
-                findPossibleValues(grid);
-                return;
-            }
-        }
+        System.out.println("findHiddenSingels");
+        // System.out.println("Boxes");
+        // for (int i = 1; i < 10; i++) {            
+        //     if ( frequency(getEmptyCells(getCellsForBox(grid, i))) ) {
+        //         findPossibleValues(grid);
+        //         return;
+        //     }
+        // }
+        // System.out.println("Columns");
+        // for (int i = 1; i < 10; i++) {            
+        //     if ( frequency(getEmptyCells(getCellsForColumn(grid, i))) ) {
+        //         findPossibleValues(grid);
+        //         return;
+        //     }
+        // }
+        // System.out.println("Rows");
+        // for (int i = 1; i < 10; i++) {            
+        //     if ( frequency(getEmptyCells(getCellsForRow(grid, i))) ) {
+        //         findPossibleValues(grid);
+        //         return;
+        //     }
+        // }
+
+        if ( findHiddenSingelsPerType(grid, "Box") ) { return; }
+        if ( findHiddenSingelsPerType(grid, "Column") ) { return; }
+        if ( findHiddenSingelsPerType(grid, "Row") ) { return; }
 
         printGrid(grid);
+    }
+
+    private static boolean findHiddenSingelsPerType(ArrayList<Cell> grid, String type) {
+        System.out.println(type);
+        boolean foundSomething = false;
+        for (int i = 1; i < 10; i++) {
+            if ( frequency(getEmptyCells(getCellsForType(grid, type, i))) ) {
+                findPossibleValues(grid);
+                return true;
+            }
+        }
+        return foundSomething;
+    }
+
+    private static List<Cell> getCellsForType(ArrayList<Cell> grid, String type, int i) {
+        switch (type) {
+            case "Box":
+                return getCellsForBox(grid, i);
+            case "Column":
+                return getCellsForColumn(grid, i);
+            case "Row":
+                return getCellsForRow(grid, i);
+            default:
+                return null;
+        }
     }
 
     private static boolean frequency(List<Cell> cells) {
