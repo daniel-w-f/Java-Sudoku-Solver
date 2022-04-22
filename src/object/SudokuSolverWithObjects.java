@@ -107,9 +107,8 @@ public class SudokuSolverWithObjects {
         printGrid(grid);
         // only try to solve it, if the initial grid is valid
         if (validateGrid(grid)) {
-            findPossibleValues(grid);
+            solveGrid(grid);
         }
-        solveGrid(grid);
     }
 
     private static void solveGrid(ArrayList<Cell> grid) {
@@ -118,6 +117,16 @@ public class SudokuSolverWithObjects {
         int emptyCells = -1;
 
         while (emptyCells != 0) {
+            
+            // Find all possible values for a cell by checking which numbers are not yet already
+            // used within the same box/column/row
+            findPossibleValues(grid);
+
+            // Check if there is only one cell for a value per box/column/row so ignore other 
+            // possible values for that cell.
+            findHiddenSingels(grid);
+
+            printGrid(grid);
 
             int tmp = getEmptyCells(grid).size();
             if (tmp == emptyCells) {
@@ -234,8 +243,6 @@ public class SudokuSolverWithObjects {
                     removePossibleValues(possibleValues, getCellsForBox(grid, cell.getBox()));
                     removePossibleValues(possibleValues, getCellsForColumn(grid, cell.getColumn()));
                     removePossibleValues(possibleValues, getCellsForRow(grid, cell.getRow()));
-                    // Todo: Check if there is only one cell for a value per Box/Column/Row
-                    // so ignore other possible values for that cell.
 
                     cell.setPossibleValues(possibleValues);
 
@@ -256,9 +263,7 @@ public class SudokuSolverWithObjects {
                 break;
             }
             emptyCells = tmp;
-        }       
-
-        findHiddenSingels(grid);
+        }
     }
 
     private static void findHiddenSingels(ArrayList<Cell> grid) {
