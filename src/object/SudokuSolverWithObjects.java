@@ -113,6 +113,20 @@ public class SudokuSolverWithObjects {
     }
 
     private static void solveGrid(ArrayList<Cell> grid) {
+        System.out.println("solveGrid");
+
+        int emptyCells = -1;
+
+        while (emptyCells != 0) {
+
+            int tmp = getEmptyCells(grid).size();
+            if (tmp == emptyCells) {
+                System.out.println("Abort, not better than before. Impending endless loop");
+                break;
+            }
+            emptyCells = tmp;
+        }
+
         if ( getEmptyCells(grid).size() == 0 ) {
             System.out.println( "Solved! :-)" );
         } else {
