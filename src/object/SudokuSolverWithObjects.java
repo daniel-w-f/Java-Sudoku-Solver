@@ -105,8 +105,10 @@ public class SudokuSolverWithObjects {
         grid.add(new Cell(row, 9, null));
 
         printGrid(grid);
-        validateGrid(grid);
-        findPossibleValues(grid);
+        // only try to solve it, if the initial grid is valid
+        if (validateGrid(grid)) {
+            findPossibleValues(grid);
+        }
     }
 
     public static void printGrid(ArrayList<Cell> grid) {
@@ -136,43 +138,24 @@ public class SudokuSolverWithObjects {
         System.out.println("validateGrid");
         boolean validGrid = true;
 
-        // Todo: How to use a variable for the filter? e.g. "c.getRow() == row"
-
-        // check rows
-        for (int i = 1; i < 10; i++) {
-            System.out.print("Row: " + (i) + "\t");
-
-            int row = i;
-            List<Cell> cellsFromRow = getCellsForRow(grid, row);
-
-            validListOfCells(cellsFromRow, validGrid);
-        }
-
-        // check columns
-        for (int i = 1; i < 10; i++) {
-            System.out.print("Column: " + (i) + "\t");
-
-            int column = i;
-            List<Cell> cellsFromColumn = getCellsForColumn(grid, column);
-
-            validListOfCells(cellsFromColumn, validGrid);
-        }
-
-        // check boxes
-        for (int i = 1; i < 10; i++) {
-            System.out.print("Box: " + (i) + "\t");
-
-            int box = i;
-            List<Cell> cellsFromColumn = getCellsForBox(grid, box);
-
-            validListOfCells(cellsFromColumn, validGrid);
-        }
+        validateGridPerType(grid, "Box", validGrid);
+        validateGridPerType(grid, "Column", validGrid);
+        validateGridPerType(grid, "Row", validGrid);
 
         System.out.println("The grid is " + (validGrid ? "" : "not ") + "valid");
         return validGrid;
     }
 
+    private static void validateGridPerType(ArrayList<Cell> grid, String type, boolean validGrid) {
+        for (int i = 1; i < 10; i++) {
+            System.out.print(type +": " + (i) + "\t");
+
+            validListOfCells(getCellsForType(grid, type, i), validGrid);
+        }
+    }
+
     public static List<Cell> getCellsForBox(ArrayList<Cell> grid, Integer box) {
+        // Todo: How to use a variable for the filter? e.g. "c.getRow() == row"
         return grid.stream().filter(c -> c.getBox() == box).collect(Collectors.toList());
     }
 
