@@ -22,34 +22,34 @@ public class SudokuSolverWithObjects {
 
         ArrayList<Cell> grid = new ArrayList<Cell>();
         int row = 1;
-        grid.add(new Cell(row, 1, null));
+        grid.add(new Cell(row, 1, 4));
         grid.add(new Cell(row, 2, null));
         grid.add(new Cell(row, 3, null));
         grid.add(new Cell(row, 4, null));
         grid.add(new Cell(row, 5, 7));
         grid.add(new Cell(row, 6, null));
-        grid.add(new Cell(row, 7, null));
-        grid.add(new Cell(row, 8, 1));
-        grid.add(new Cell(row, 9, null));
-        row = 2;
-        grid.add(new Cell(row, 1, 1));
-        grid.add(new Cell(row, 2, null));
-        grid.add(new Cell(row, 3, null));
-        grid.add(new Cell(row, 4, null));
-        grid.add(new Cell(row, 5, 2));
-        grid.add(new Cell(row, 6, 9));
-        grid.add(new Cell(row, 7, 7));
-        grid.add(new Cell(row, 8, null));
-        grid.add(new Cell(row, 9, null));
-        row = 3;
-        grid.add(new Cell(row, 1, 3));
-        grid.add(new Cell(row, 2, null));
-        grid.add(new Cell(row, 3, null));
-        grid.add(new Cell(row, 4, 5));
-        grid.add(new Cell(row, 5, null));
-        grid.add(new Cell(row, 6, 1));
         grid.add(new Cell(row, 7, 9));
         grid.add(new Cell(row, 8, null));
+        grid.add(new Cell(row, 9, null));
+        row = 2;
+        grid.add(new Cell(row, 1, null));
+        grid.add(new Cell(row, 2, 6));
+        grid.add(new Cell(row, 3, null));
+        grid.add(new Cell(row, 4, 9));
+        grid.add(new Cell(row, 5, null));
+        grid.add(new Cell(row, 6, null));
+        grid.add(new Cell(row, 7, 1));
+        grid.add(new Cell(row, 8, 5));
+        grid.add(new Cell(row, 9, 8));
+        row = 3;
+        grid.add(new Cell(row, 1, null));
+        grid.add(new Cell(row, 2, null));
+        grid.add(new Cell(row, 3, 8));
+        grid.add(new Cell(row, 4, 1));
+        grid.add(new Cell(row, 5, null));
+        grid.add(new Cell(row, 6, null));
+        grid.add(new Cell(row, 7, 3));
+        grid.add(new Cell(row, 8, 4));
         grid.add(new Cell(row, 9, null));
         row = 4;
         grid.add(new Cell(row, 1, null));
@@ -58,58 +58,58 @@ public class SudokuSolverWithObjects {
         grid.add(new Cell(row, 4, null));
         grid.add(new Cell(row, 5, null));
         grid.add(new Cell(row, 6, null));
-        grid.add(new Cell(row, 7, null));
+        grid.add(new Cell(row, 7, 4));
         grid.add(new Cell(row, 8, null));
         grid.add(new Cell(row, 9, null));
         row = 5;
-        grid.add(new Cell(row, 1, null));
-        grid.add(new Cell(row, 2, 8));
-        grid.add(new Cell(row, 3, null));
-        grid.add(new Cell(row, 4, 7));
-        grid.add(new Cell(row, 5, 4));
-        grid.add(new Cell(row, 6, 5));
-        grid.add(new Cell(row, 7, null));
-        grid.add(new Cell(row, 8, null));
-        grid.add(new Cell(row, 9, null));
-        row = 6;
-        grid.add(new Cell(row, 1, 7));
+        grid.add(new Cell(row, 1, 3));
         grid.add(new Cell(row, 2, null));
-        grid.add(new Cell(row, 3, null));
+        grid.add(new Cell(row, 3, 6));
         grid.add(new Cell(row, 4, null));
-        grid.add(new Cell(row, 5, null));
+        grid.add(new Cell(row, 5, 4));
         grid.add(new Cell(row, 6, null));
         grid.add(new Cell(row, 7, 2));
         grid.add(new Cell(row, 8, 8));
         grid.add(new Cell(row, 9, null));
-        row = 7;
+        row = 6;
         grid.add(new Cell(row, 1, null));
-        grid.add(new Cell(row, 2, 1));
+        grid.add(new Cell(row, 2, null));
         grid.add(new Cell(row, 3, null));
         grid.add(new Cell(row, 4, null));
-        grid.add(new Cell(row, 5, 8));
-        grid.add(new Cell(row, 6, null));
-        grid.add(new Cell(row, 7, 6));
-        grid.add(new Cell(row, 8, null));
-        grid.add(new Cell(row, 9, null));
-        row = 8;
-        grid.add(new Cell(row, 1, 6));
-        grid.add(new Cell(row, 2, 9));
-        grid.add(new Cell(row, 3, 4));
+        grid.add(new Cell(row, 5, null));
+        grid.add(new Cell(row, 6, 1));
+        grid.add(new Cell(row, 7, 7));
+        grid.add(new Cell(row, 8, 3));
+        grid.add(new Cell(row, 9, 5));
+        row = 7;
+        grid.add(new Cell(row, 1, 8));
+        grid.add(new Cell(row, 2, null));
+        grid.add(new Cell(row, 3, null));
         grid.add(new Cell(row, 4, null));
         grid.add(new Cell(row, 5, 5));
+        grid.add(new Cell(row, 6, null));
+        grid.add(new Cell(row, 7, null));
+        grid.add(new Cell(row, 8, 9));
+        grid.add(new Cell(row, 9, 4));
+        row = 8;
+        grid.add(new Cell(row, 1, null));
+        grid.add(new Cell(row, 2, null));
+        grid.add(new Cell(row, 3, null));
+        grid.add(new Cell(row, 4, null));
+        grid.add(new Cell(row, 5, null));
         grid.add(new Cell(row, 6, null));
         grid.add(new Cell(row, 7, null));
         grid.add(new Cell(row, 8, null));
         grid.add(new Cell(row, 9, null));
         row = 9;
         grid.add(new Cell(row, 1, null));
-        grid.add(new Cell(row, 2, null));
+        grid.add(new Cell(row, 2, 7));
         grid.add(new Cell(row, 3, null));
         grid.add(new Cell(row, 4, null));
-        grid.add(new Cell(row, 5, 1));
+        grid.add(new Cell(row, 5, 8));
         grid.add(new Cell(row, 6, null));
         grid.add(new Cell(row, 7, null));
-        grid.add(new Cell(row, 8, 4));
+        grid.add(new Cell(row, 8, null));
         grid.add(new Cell(row, 9, null));
 
         printGrid(grid);
@@ -220,24 +220,25 @@ public class SudokuSolverWithObjects {
     private static void frequency(List<Cell> cells) {
         System.out.println("\nfrequency");
 
+        // Todo: Make nice way to get a combined list of all possible numbers in a nice way
         // List<Integer> numbers = cells.stream().flatMap(Collection::stream).collect(Collectors.toList());
         // List<Integer> numbers = cells.stream().flatMapToInt(Cell::getPossibleValues).collect(Collectors.toList());
         // List<Integer> joinedList = (List<Integer>) Collection.stream().flatMap(Collection::stream).collect(Collectors.toList());
-
         // System.out.println(joinedList);
 
         List<Integer> allPossibleNumbers = new ArrayList<Integer>();
-
         for (Cell cell : cells) {
             if (cell.getPossibleValues() != null) {
                 allPossibleNumbers.addAll(cell.getPossibleValues());
             }
         }
-
         List<Integer> uniqueNumbers = allPossibleNumbers.stream().distinct().collect(Collectors.toList());
 
         for (Integer integer : uniqueNumbers) {
             System.out.println("integer: "+ integer +" | frequency: "+ Collections.frequency(allPossibleNumbers, integer));
+            if (Collections.frequency(allPossibleNumbers, integer) == 1) {
+                System.out.println("- - - - only 1 place for the number: "+ integer );
+            }
         }
 
         System.out.println(allPossibleNumbers);
