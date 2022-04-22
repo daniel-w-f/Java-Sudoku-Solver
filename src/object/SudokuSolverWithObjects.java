@@ -1,12 +1,9 @@
 package object;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -14,12 +11,6 @@ import java.util.stream.Stream;
 public class SudokuSolverWithObjects {
 
     public static void main(String[] args) {
-
-        // if (validateGrid(startingGrid)) {
-        // System.out.println("The grid is valid");
-        // } else {
-        // System.out.println("The grid is not valid");
-        // }
 
         ArrayList<Cell> grid = new ArrayList<Cell>();
         int row = 1;
@@ -268,27 +259,6 @@ public class SudokuSolverWithObjects {
 
     private static void findHiddenSingels(ArrayList<Cell> grid) {
         System.out.println("findHiddenSingels");
-        // System.out.println("Boxes");
-        // for (int i = 1; i < 10; i++) {            
-        //     if ( frequency(getEmptyCells(getCellsForBox(grid, i))) ) {
-        //         findPossibleValues(grid);
-        //         return;
-        //     }
-        // }
-        // System.out.println("Columns");
-        // for (int i = 1; i < 10; i++) {            
-        //     if ( frequency(getEmptyCells(getCellsForColumn(grid, i))) ) {
-        //         findPossibleValues(grid);
-        //         return;
-        //     }
-        // }
-        // System.out.println("Rows");
-        // for (int i = 1; i < 10; i++) {            
-        //     if ( frequency(getEmptyCells(getCellsForRow(grid, i))) ) {
-        //         findPossibleValues(grid);
-        //         return;
-        //     }
-        // }
 
         if ( findHiddenSingelsPerType(grid, "Box") ) { return; }
         if ( findHiddenSingelsPerType(grid, "Column") ) { return; }
@@ -329,7 +299,6 @@ public class SudokuSolverWithObjects {
         // List<Integer> numbers = cells.stream().flatMap(Collection::stream).collect(Collectors.toList());
         // List<Integer> numbers = cells.stream().flatMapToInt(Cell::getPossibleValues).collect(Collectors.toList());
         // List<Integer> joinedList = (List<Integer>) Collection.stream().flatMap(Collection::stream).collect(Collectors.toList());
-        // System.out.println(joinedList);
 
         List<Integer> allPossibleNumbers = new ArrayList<Integer>();
         for (Cell cell : cells) {
@@ -346,12 +315,6 @@ public class SudokuSolverWithObjects {
             if (Collections.frequency(allPossibleNumbers, integer) == 1) {
                 System.out.println("- - - - only 1 place for the number: "+ integer );
                 // Todo: find cell that belongs to this number that only occures once
-                // List<Cell> list = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).collect(Collectors.toList());
-                // System.out.println(cells.stream().filter(c -> c.getPossibleValues().contains(integer)));
-                // System.out.println(cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst());
-                // Optional<Cell> cell = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst();
-                // Cell c = cell.get();
-                // System.out.println(c.getDescription());
                 Cell cell = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst().get();
                 System.out.println(cell.getDescription());
 
@@ -362,8 +325,6 @@ public class SudokuSolverWithObjects {
                 foundSomething = true;
                 
                 System.out.println(cell.getDescription());
-
-                // System.out.println(list.get(0).getDescription());
             }
         }
 
