@@ -117,7 +117,7 @@ public class SudokuSolverWithObjects {
         int emptyCells = -1;
 
         while (emptyCells != 0) {
-            
+
             // Find all possible values for a cell by checking which numbers are not yet already
             // used within the same box/column/row
             findPossibleValues(grid);
@@ -136,10 +136,10 @@ public class SudokuSolverWithObjects {
             emptyCells = tmp;
         }
 
-        if ( getEmptyCells(grid).size() == 0 ) {
-            System.out.println( "Solved! :-)" );
+        if (getEmptyCells(grid).size() == 0) {
+            System.out.println("Solved! :-)");
         } else {
-            System.out.println( "Not solved :-(" );
+            System.out.println("Not solved :-(");
         }
     }
 
@@ -180,7 +180,7 @@ public class SudokuSolverWithObjects {
 
     private static void validateGridPerType(ArrayList<Cell> grid, String type, boolean validGrid) {
         for (int i = 1; i < 10; i++) {
-            System.out.print(type +": " + (i) + "\t");
+            System.out.print(type + ": " + (i) + "\t");
 
             validListOfCells(getCellsForType(grid, type, i), validGrid);
         }
@@ -269,23 +269,27 @@ public class SudokuSolverWithObjects {
     private static void findHiddenSingels(ArrayList<Cell> grid) {
         System.out.println("findHiddenSingels");
 
-        if ( findHiddenSingelsPerType(grid, "Box") ) { return; }
-        if ( findHiddenSingelsPerType(grid, "Column") ) { return; }
-        if ( findHiddenSingelsPerType(grid, "Row") ) { return; }
-
-        printGrid(grid);
+        // Early return from method if any hidden single was found, because in that case we need to
+        // check again for possible values within the loop in 'solveGrid'.
+        if (findHiddenSingelsPerType(grid, "Box")) {
+            return;
+        }
+        if (findHiddenSingelsPerType(grid, "Column")) {
+            return;
+        }
+        if (findHiddenSingelsPerType(grid, "Row")) {
+            return;
+        }
     }
 
     private static boolean findHiddenSingelsPerType(ArrayList<Cell> grid, String type) {
         System.out.println(type);
-        boolean foundSomething = false;
         for (int i = 1; i < 10; i++) {
-            if ( frequency(getEmptyCells(getCellsForType(grid, type, i))) ) {
-                findPossibleValues(grid);
+            if (frequency(getEmptyCells(getCellsForType(grid, type, i)))) {
                 return true;
             }
         }
-        return foundSomething;
+        return false;
     }
 
     private static List<Cell> getCellsForType(ArrayList<Cell> grid, String type, int i) {
@@ -322,7 +326,7 @@ public class SudokuSolverWithObjects {
         for (Integer integer : uniqueNumbers) {
             // System.out.println("integer: "+ integer +" | frequency: "+ Collections.frequency(allPossibleNumbers, integer));
             if (Collections.frequency(allPossibleNumbers, integer) == 1) {
-                System.out.println("- - - - only 1 place for the number: "+ integer );
+                System.out.println("- - - - only 1 place for the number: " + integer);
                 // Todo: find cell that belongs to this number that only occures once
                 Cell cell = cells.stream().filter(c -> c.getPossibleValues().contains(integer)).findFirst().get();
                 System.out.println(cell.getDescription());
@@ -330,14 +334,14 @@ public class SudokuSolverWithObjects {
                 cell.setValue(integer);
                 // as soon as 1 value is set all the other values must be reevaluated.....!!!
 
-                // keep track of this, but continue to find more 
+                // keep track of this, but continue to find more
                 foundSomething = true;
-                
+
                 System.out.println(cell.getDescription());
             }
         }
 
-        System.out.println("foundSomething: "+ foundSomething);
+        System.out.println("foundSomething: " + foundSomething);
 
         System.out.println(allPossibleNumbers);
 
