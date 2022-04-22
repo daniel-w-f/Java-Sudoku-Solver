@@ -109,6 +109,15 @@ public class SudokuSolverWithObjects {
         if (validateGrid(grid)) {
             findPossibleValues(grid);
         }
+        solveGrid(grid);
+    }
+
+    private static void solveGrid(ArrayList<Cell> grid) {
+        if ( getEmptyCells(grid).size() == 0 ) {
+            System.out.println( "Solved! :-)" );
+        } else {
+            System.out.println( "Not solved :-(" );
+        }
     }
 
     public static void printGrid(ArrayList<Cell> grid) {
@@ -236,8 +245,6 @@ public class SudokuSolverWithObjects {
         }       
 
         findHiddenSingels(grid);
-
-        System.out.println("solved");
     }
 
     private static void findHiddenSingels(ArrayList<Cell> grid) {
