@@ -115,27 +115,35 @@ public class SudokuSolverWithObjects {
         System.out.println("solveGrid");
 
         int emptyCells = -1;
-
         while (emptyCells != 0) {
 
             // Find all possible values for a cell by checking which numbers are not yet already
             // used within the same box/column/row
             findPossibleValues(grid);
 
-            List<Integer> allPossibleNumbers = getAllPossibleNumbers(grid);
+            int possibleNumbers = -1;
+            while (possibleNumbers != 0) {
 
-            // Check if there is only one cell for a value per box/column/row so ignore other 
-            // possible values for that cell.
-            findHiddenSingels(grid);
+                // Check if there is only one cell for a value per box/column/row so ignore other 
+                // possible values for that cell.
+                findHiddenSingels(grid);
 
-            // Locked Candidates Type 1 (Pointing): If in a block all candidates of a certain digit 
-            // are confined to a row or column, that digit cannot appear outside of that block in 
-            // that row or column.
-            // Locked Candidates Type 2 (Claiming): Locked Candidates Type 2 works exactly the 
-            // other way round: If in a row (or column) all candidates of a certain digit are 
-            // confined to one block, that candidate that be eliminated from all other cells in 
-            // that block.
-            findLockedCandidates(grid);
+                // Locked Candidates Type 1 (Pointing): If in a block all candidates of a certain 
+                // digit are confined to a row or column, that digit cannot appear outside of that 
+                // block in that row or column.
+                // Locked Candidates Type 2 (Claiming): Locked Candidates Type 2 works exactly the 
+                // other way round: If in a row (or column) all candidates of a certain digit are 
+                // confined to one block, that candidate that be eliminated from all other cells in 
+                // that block.
+                findLockedCandidates(grid);
+
+                int tmp = getAllPossibleNumbers(grid).size();
+                if (tmp == possibleNumbers) {
+                    System.out.println("Abort, not better than before. Impending endless loop");
+                    break;
+                }
+                possibleNumbers = tmp;
+            }
 
             // get inspiration from here: http://hodoku.sourceforge.net/en/tech_intersections.php
 
@@ -201,16 +209,20 @@ public class SudokuSolverWithObjects {
                             List<Cell> cellsFromBox = getCellsForType(grid, "Box", j);
                             List<Cell> cellsFromRow = getCellsForType(cellsFromBox, "Row", row);
                             List<Cell> cellsToCheck = getEmptyCells(cellsFromRow);
-                            List<Cell> cellsContainignNumber = getCellsContainPossibleNumber(cellsToCheck, integer);
-                            for (Cell cell : cellsContainignNumber) {
-                                System.out.println("Remove ["+ integer +"] from: "+ cell.getDescription());
-                                cell.getPossibleValues().remove(integer);
-                                // System.out.println(cell.getDescription());
-                            }
+                            removeNumberAsPossible(integer, cellsToCheck);
                         }
                     }
                 }
             }
+        }
+    }
+
+    private static void removeNumberAsPossible(Integer integer, List<Cell> cellsToCheck) {
+        List<Cell> cellsContainignNumber = getCellsContainPossibleNumber(cellsToCheck, integer);
+        for (Cell cell : cellsContainignNumber) {
+            System.out.println("Remove ["+ integer +"] from: "+ cell.getDescription());
+            cell.getPossibleValues().remove(integer);
+            // System.out.println(cell.getDescription());
         }
     }
 
@@ -403,6 +415,13 @@ public class SudokuSolverWithObjects {
 
                 cell.setValue(integer);
                 // as soon as 1 value is set all the other values must be reevaluated.....!!!
+
+                // TODO!
+                // List<Cell> cellsFromBox = getCellsForType(grid, "Box", j);
+                // List<Cell> cellsFromRow = getCellsForType(cellsFromBox, "Row", row);
+                // List<Cell> cellsToCheck = getEmptyCells(cellsFromRow);
+                // removeNumberAsPossible(integer, cellsToCheck);
+
 
                 // keep track of this, but continue to find more
                 foundSomething = true;
