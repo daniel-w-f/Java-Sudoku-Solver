@@ -10,9 +10,11 @@ import java.util.stream.Stream;
 
 public class SudokuSolverWithObjects {
 
+    private static List<Cell> grid;
+
     public static void main(String[] args) {
 
-        List<Cell> grid = new ArrayList<Cell>();
+        grid = new ArrayList<Cell>();
         int row = 1;
         grid.add(new Cell(row, 1, 4));
         grid.add(new Cell(row, 2, null));
@@ -104,14 +106,14 @@ public class SudokuSolverWithObjects {
         grid.add(new Cell(row, 8, null));
         grid.add(new Cell(row, 9, null));
 
-        printGrid(grid);
+        printGrid();
         // only try to solve it, if the initial grid is valid
-        if (validateGrid(grid)) {
-            solveGrid(grid);
+        if (validateGrid()) {
+            solveGrid();
         }
     }
 
-    private static void solveGrid(List<Cell> grid) {
+    private static void solveGrid() {
         System.out.println("solveGrid");
 
         int emptyCells = -1;
@@ -147,7 +149,7 @@ public class SudokuSolverWithObjects {
 
             // get inspiration from here: http://hodoku.sourceforge.net/en/tech_intersections.php
 
-            printGrid(grid);
+            printGrid();
 
             int tmp = getEmptyCells(grid).size();
             if (tmp == emptyCells) {
@@ -177,7 +179,7 @@ public class SudokuSolverWithObjects {
             - find cells in other boxes container that number
             - remove the number from the list of possible values
         */
-        printGrid(grid);
+        printGrid();
         List<Cell> emptyCells = getEmptyCells(grid);
         for (int i = 1; i < 10; i++) {
             System.out.println("Box: "+ i);
@@ -226,7 +228,7 @@ public class SudokuSolverWithObjects {
         }
     }
 
-    public static void printGrid(List<Cell> grid) {
+    public static void printGrid() {
         System.out.println("printGrid");
 
         for (int i = 1; i < 10; i++) {
@@ -249,7 +251,7 @@ public class SudokuSolverWithObjects {
         }
     }
 
-    public static boolean validateGrid(List<Cell> grid) {
+    public static boolean validateGrid() {
         System.out.println("validateGrid");
         boolean validGrid = true;
 
@@ -337,7 +339,7 @@ public class SudokuSolverWithObjects {
                 }
             }
 
-            printGrid(grid);
+            printGrid();
             System.out.println();
 
             // for (Cell cell : grid) {
@@ -417,11 +419,15 @@ public class SudokuSolverWithObjects {
                 // as soon as 1 value is set all the other values must be reevaluated.....!!!
 
                 // TODO!
-                // List<Cell> cellsFromBox = getCellsForType(grid, "Box", j);
-                // List<Cell> cellsFromRow = getCellsForType(cellsFromBox, "Row", row);
-                // List<Cell> cellsToCheck = getEmptyCells(cellsFromRow);
-                // removeNumberAsPossible(integer, cellsToCheck);
-
+                List<Cell> cellsFromBox = getCellsForType(grid, "Box", cell.getBox());
+                List<Cell> cellsFromColumn = getCellsForType(grid, "Column", cell.getColumn());                
+                List<Cell> cellsFromRow = getCellsForType(grid, "Row", cell.getRow());
+                List<Cell> combinedCellList = new ArrayList<Cell>();
+                combinedCellList.addAll(cellsFromBox);
+                combinedCellList.addAll(cellsFromColumn);
+                combinedCellList.addAll(cellsFromRow);
+                List<Cell> cellsToCheck = getEmptyCells(combinedCellList);
+                removeNumberAsPossible(integer, cellsToCheck);
 
                 // keep track of this, but continue to find more
                 foundSomething = true;
