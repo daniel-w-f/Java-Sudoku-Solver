@@ -12,7 +12,7 @@ public class SudokuSolverWithObjects {
 
     public static void main(String[] args) {
 
-        ArrayList<Cell> grid = new ArrayList<Cell>();
+        List<Cell> grid = new ArrayList<Cell>();
         int row = 1;
         grid.add(new Cell(row, 1, 4));
         grid.add(new Cell(row, 2, null));
@@ -111,7 +111,7 @@ public class SudokuSolverWithObjects {
         }
     }
 
-    private static void solveGrid(ArrayList<Cell> grid) {
+    private static void solveGrid(List<Cell> grid) {
         System.out.println("solveGrid");
 
         int emptyCells = -1;
@@ -121,6 +121,8 @@ public class SudokuSolverWithObjects {
             // Find all possible values for a cell by checking which numbers are not yet already
             // used within the same box/column/row
             findPossibleValues(grid);
+
+            List<Integer> allPossibleNumbers = getAllPossibleNumbers(grid);
 
             // Check if there is only one cell for a value per box/column/row so ignore other 
             // possible values for that cell.
@@ -154,7 +156,7 @@ public class SudokuSolverWithObjects {
         }
     }
 
-    private static void findLockedCandidates(ArrayList<Cell> grid) {
+    private static void findLockedCandidates(List<Cell> grid) {
         /*
         - filter grid, to get only empty cells
         - type 1
@@ -212,7 +214,7 @@ public class SudokuSolverWithObjects {
         }
     }
 
-    public static void printGrid(ArrayList<Cell> grid) {
+    public static void printGrid(List<Cell> grid) {
         System.out.println("printGrid");
 
         for (int i = 1; i < 10; i++) {
@@ -235,7 +237,7 @@ public class SudokuSolverWithObjects {
         }
     }
 
-    public static boolean validateGrid(ArrayList<Cell> grid) {
+    public static boolean validateGrid(List<Cell> grid) {
         System.out.println("validateGrid");
         boolean validGrid = true;
 
@@ -247,7 +249,7 @@ public class SudokuSolverWithObjects {
         return validGrid;
     }
 
-    private static void validateGridPerType(ArrayList<Cell> grid, String type, boolean validGrid) {
+    private static void validateGridPerType(List<Cell> grid, String type, boolean validGrid) {
         for (int i = 1; i < 10; i++) {
             System.out.print(type + ": " + (i) + "\t");
 
@@ -297,7 +299,7 @@ public class SudokuSolverWithObjects {
         return valid;
     }
 
-    private static void findPossibleValues(ArrayList<Cell> grid) {
+    private static void findPossibleValues(List<Cell> grid) {
         System.out.println("validListOfCells");
 
         int emptyCells = -1;
@@ -339,7 +341,7 @@ public class SudokuSolverWithObjects {
         }
     }
 
-    private static void findHiddenSingels(ArrayList<Cell> grid) {
+    private static void findHiddenSingels(List<Cell> grid) {
         System.out.println("findHiddenSingels");
 
         // Early return from method if any hidden single was found, because in that case we need to
@@ -355,7 +357,7 @@ public class SudokuSolverWithObjects {
         }
     }
 
-    private static boolean findHiddenSingelsPerType(ArrayList<Cell> grid, String type) {
+    private static boolean findHiddenSingelsPerType(List<Cell> grid, String type) {
         System.out.println(type);
         for (int i = 1; i < 10; i++) {
             if (frequency(getEmptyCells(getCellsForType(grid, type, i)))) {
