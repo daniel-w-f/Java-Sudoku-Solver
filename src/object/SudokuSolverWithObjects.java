@@ -167,12 +167,15 @@ public class SudokuSolverWithObjects {
             - find cells in other boxes container that number
             - remove the number from the list of possible values
         */
+        printGrid(grid);
         List<Cell> emptyCells = getEmptyCells(grid);
         for (int i = 1; i < 10; i++) {
+            System.out.println("Box: "+ i);
             List<Cell> boxCells = getCellsForType(emptyCells, "Box", i);
             List<Integer> allPossibleNumbers = getAllPossibleNumbers(boxCells);
             List<Integer> uniqueNumbers = allPossibleNumbers.stream().distinct().collect(Collectors.toList());
             for (Integer integer : uniqueNumbers) {
+                System.out.println("uniqueNumber: "+ integer);
                 List<Cell> cellsWithPossibleValue = boxCells.stream().filter(c -> c.getPossibleValues().contains(integer)).collect(Collectors.toList());
                 int row = 0;
                 for (Cell cell : cellsWithPossibleValue) {
@@ -185,14 +188,22 @@ public class SudokuSolverWithObjects {
                     }
                 }
                 if ( row != -1 ) {
-                    System.out.println("Box: "+ i);
                     int startingBox = (int)((Math.ceil(row / 3.0)-1) * 3)+1;
 
                     // Go through the 3 boxes from the same row
                     for (int j = startingBox; j < startingBox+3; j++) {
                         // Skip the box for that we have checked initially the cells
                         if (j != i) {
-                            System.out.println("j: "+ j);    
+                            System.out.println("j/Box: "+ j);
+                            List<Cell> cellsFromBox = getCellsForType(grid, "Box", j);
+                            List<Cell> cellsFromRow = getCellsForType(cellsFromBox, "Row", row);
+                            List<Cell> cellsToCheck = getEmptyCells(cellsFromRow);
+                            List<Cell> cellsContainignNumber = cellsToCheck.stream().filter(c -> c.getPossibleValues().contains(integer)).collect(Collectors.toList());
+                            for (Cell cell : cellsContainignNumber) {
+                                System.out.println("Remove ["+ integer +"] from: "+ cell.getDescription());
+                                cell.getPossibleValues().remove(integer);
+                                // System.out.println(cell.getDescription());
+                            }
                         }
                     }
                 }
