@@ -185,15 +185,16 @@ public class SudokuSolverWithObjects {
                     }
                 }
                 if ( row != -1 ) {
-                    // Todo: Find nice logic to get box 2 & 3 if i = 1, box 1 & 3 if i = 2... etc
-                    // Reuse the formula to convert row/column into box? and then remove the current number from it?
-                    // f(1) = 1,2,3 - 1
-                    // f(2) = 1,2,3 - 2
-                    // f(3) = 1,2,3 - 3
-                    // f(4) = 4,5,6 - 4
-                    // ... 
-                    // Fill list with 3 numbers f(1) = 1, f(2) = 1, f(3) = 1, f(4) = 4
-                    // next step.....   - find cells in other boxes container that number
+                    System.out.println("Box: "+ i);
+                    int startingBox = (int)((Math.ceil(row / 3.0)-1) * 3)+1;
+
+                    // Go through the 3 boxes from the same row
+                    for (int j = startingBox; j < startingBox+3; j++) {
+                        // Skip the box for that we have checked initially the cells
+                        if (j != i) {
+                            System.out.println("j: "+ j);    
+                        }
+                    }
                 }
             }
         }
