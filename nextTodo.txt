@@ -1,0 +1,21 @@
+Cell box: 1 | column: 1 | row: 1 | possible values: [3, 5, 6] | possibleValues:[3, 5, 6]
+Cell box: 1 | column: 2 | row: 1 | possible values: [3, 5] | possibleValues:[3, 5]
+Cell box: 1 | column: 3 | row: 1 | possible values: [5, 6] | possibleValues:[5, 6]
+Cell box: 1 | column: 1 | row: 2 | possible values: [3, 4, 5, 6] | possibleValues:[3, 4, 5, 6]
+Cell box: 1 | column: 3 | row: 2 | possible values: [1, 4, 5, 6, 7] | possibleValues:[1, 4, 5, 6, 7]
+Cell box: 1 | column: 3 | row: 3 | possible values: [1, 4, 6, 7] | possibleValues:[1, 4, 6, 7]
+
+column 1 | row 2 should be 4, because it cannot be in column 3, because 1 and 7 can only be placed in
+column 3 | row 2 or 3
+
+...|...|174
+.2.|...|8..
+98.|...|5..
+---+---+---
+.63|97.|2..
+81.|5..|.47
+.7.|..8|..3
+---+---+---
+1..|.4.|7.5
+7..|...|...
+..8|.17|...
