@@ -176,7 +176,8 @@ public class SudokuSolverWithObjects {
             List<Integer> uniqueNumbers = allPossibleNumbers.stream().distinct().collect(Collectors.toList());
             for (Integer integer : uniqueNumbers) {
                 System.out.println("uniqueNumber: "+ integer);
-                List<Cell> cellsWithPossibleValue = boxCells.stream().filter(c -> c.getPossibleValues().contains(integer)).collect(Collectors.toList());
+                List<Cell> cellsWithPossibleValue = getCellsContainPossibleNumber(boxCells,integer);
+                
                 int row = 0;
                 for (Cell cell : cellsWithPossibleValue) {
                     if (row == 0 ) {
@@ -198,7 +199,7 @@ public class SudokuSolverWithObjects {
                             List<Cell> cellsFromBox = getCellsForType(grid, "Box", j);
                             List<Cell> cellsFromRow = getCellsForType(cellsFromBox, "Row", row);
                             List<Cell> cellsToCheck = getEmptyCells(cellsFromRow);
-                            List<Cell> cellsContainignNumber = cellsToCheck.stream().filter(c -> c.getPossibleValues().contains(integer)).collect(Collectors.toList());
+                            List<Cell> cellsContainignNumber = getCellsContainPossibleNumber(cellsToCheck, integer);
                             for (Cell cell : cellsContainignNumber) {
                                 System.out.println("Remove ["+ integer +"] from: "+ cell.getDescription());
                                 cell.getPossibleValues().remove(integer);
@@ -267,8 +268,12 @@ public class SudokuSolverWithObjects {
         return cells.stream().filter(c -> c.getRow() == row).collect(Collectors.toList());
     }
 
-    public static List<Cell> getEmptyCells(List<Cell> list) {
-        return list.stream().filter(c -> c.getValue() == null).collect(Collectors.toList());
+    public static List<Cell> getEmptyCells(List<Cell> cells) {
+        return cells.stream().filter(c -> c.getValue() == null).collect(Collectors.toList());
+    }
+
+    private static List<Cell> getCellsContainPossibleNumber(List<Cell> cells, Integer integer) {
+        return cells.stream().filter(c -> c.getPossibleValues().contains(integer)).collect(Collectors.toList());
     }
 
     public static boolean validListOfCells(List<Cell> cells, boolean validGrid) {
