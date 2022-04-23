@@ -135,6 +135,8 @@ public class SudokuSolverWithObjects {
             // that block.
             findLockedCandidates(grid);
 
+            // get inspiration from here: http://hodoku.sourceforge.net/en/tech_intersections.php
+
             printGrid(grid);
 
             int tmp = getEmptyCells(grid).size();
@@ -170,6 +172,30 @@ public class SudokuSolverWithObjects {
             List<Cell> boxCells = getCellsForType(emptyCells, "Box", i);
             List<Integer> allPossibleNumbers = getAllPossibleNumbers(boxCells);
             List<Integer> uniqueNumbers = allPossibleNumbers.stream().distinct().collect(Collectors.toList());
+            for (Integer integer : uniqueNumbers) {
+                List<Cell> cellsWithPossibleValue = boxCells.stream().filter(c -> c.getPossibleValues().contains(integer)).collect(Collectors.toList());
+                int row = 0;
+                for (Cell cell : cellsWithPossibleValue) {
+                    if (row == 0 ) {
+                        row = cell.getRow();
+                    }
+                    if ( row != cell.getRow() ) {
+                        row = -1;
+                        break;
+                    }
+                }
+                if ( row != -1 ) {
+                    // Todo: Find nice logic to get box 2 & 3 if i = 1, box 1 & 3 if i = 2... etc
+                    // Reuse the formula to convert row/column into box? and then remove the current number from it?
+                    // f(1) = 1,2,3 - 1
+                    // f(2) = 1,2,3 - 2
+                    // f(3) = 1,2,3 - 3
+                    // f(4) = 4,5,6 - 4
+                    // ... 
+                    // Fill list with 3 numbers f(1) = 1, f(2) = 1, f(3) = 1, f(4) = 4
+                    // next step.....   - find cells in other boxes container that number
+                }
+            }
         }
     }
 
