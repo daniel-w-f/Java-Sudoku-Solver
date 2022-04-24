@@ -3,6 +3,7 @@ package object;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -139,6 +140,8 @@ public class SudokuSolverWithObjects {
                 // that block.
                 findLockedCandidates(grid);
 
+                findHiddenPair();
+
                 int tmp = getAllPossibleNumbers(grid).size();
                 if (tmp == possibleNumbers) {
                     System.out.println("Abort, not better than before. Impending endless loop");
@@ -166,7 +169,74 @@ public class SudokuSolverWithObjects {
         }
     }
 
+    private static void findHiddenPair() {
+        System.out.println("findHiddenPair");
+
+        for (int i = 1; i < 10; i++) {
+            System.out.println("Box: "+ i);
+            List<Cell> cells = getEmptyCells(getCellsForType(grid, "Box", i));
+
+            List<Integer> allPossibleNumbers = getAllPossibleNumbers(cells);
+            List<Integer> uniqueNumbers = allPossibleNumbers.stream().distinct().collect(Collectors.toList());
+
+            List<Integer> pairs = new ArrayList();
+    
+            for (Integer integer : uniqueNumbers) {
+                if (Collections.frequency(allPossibleNumbers, integer) == 2) {
+                    System.out.println("Number: "+ integer );
+                    pairs.add(integer);
+                }
+            }
+
+            // Todo: what to do if we have more than 2 pairs?
+            // Do we have 2 pairs?
+            if ( pairs.size() == 2 ) {
+                System.out.println( "2 pairs!" );
+                System.out.println(pairs);
+
+
+                List<Cell> cellsWithPairs = new ArrayList();
+                // Set<Integer> cellsWithPairs = new LinkedHashSet<>();
+                for (Integer integer : pairs) {
+                    cellsWithPairs.addAll( getCellsContainPossibleNumber(cells, integer));
+                }
+
+                
+
+                //  TEST THIS?!
+                List<Cell> uniquePairs = cellsWithPairs.stream().distinct().collect( Collectors.toList());
+
+
+                // Todo: do something with that...
+                if (uniquePairs.size() == 2) {
+                    System.out.println("bla...");
+                    System.out.println(uniquePairs.get(0).getDescription());
+                    System.out.println(uniquePairs.get(1).getDescription());
+                    // go through the cells and remove possible values that are not in pairs
+                    // - get all possible numbers from these 2 cells
+                    List<Integer> allPossibleNumbersForPairs = getAllPossibleNumbers(uniquePairs);
+                    List<Integer> uniqueNumbersForPairs = allPossibleNumbersForPairs.stream().distinct().collect(Collectors.toList());
+                    // - remove the 2 pair numbers
+                    // we know that there are only 2 in
+                    uniqueNumbersForPairs.remove(pairs.get(0));
+                    uniqueNumbersForPairs.remove(pairs.get(1));
+                    // - iterate over possible numbers to remove?
+                    for (Integer integer : uniqueNumbersForPairs) {
+                        uniquePairs.get(0).getPossibleValues().remove(integer);
+                        uniquePairs.get(1).getPossibleValues().remove(integer);
+                    }
+                    // - or is there a "removeall" option?
+                    System.out.println(uniquePairs.get(0).getDescription());
+                    System.out.println(uniquePairs.get(1).getDescription());
+                } else {
+                    System.out.println("foo");
+                }
+            }
+        }
+    }
+
     private static void findLockedCandidates(List<Cell> grid) {
+        System.out.println("findLockedCandidates");
         /*
         - filter grid, to get only empty cells
         - type 1
