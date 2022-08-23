@@ -1,20 +1,23 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class SudokuSums {
 
-    // static int[] SUDOKU_NUMBERS = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-    static int[] SUDOKU_NUMBERS = new int[] { 1, 2, 3, 4, 5, 6, 9 };
+    static int[] SUDOKU_NUMBERS = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-    static int MIN_SUM = 15;
-    static int MAX_SUM = 15;
+    static int MIN_SUM = 1;
+    static int MAX_SUM = 100;
 
     public static void main(String[] args) {
-        calculateUniqueSumsOfTwo();
-        calculateUniqueSumsOfThree();
+        // calculateUniqueSumsOfTwo();
+        // calculateUniqueSumsOfThree();
         calculateUniqueSumsOfFour();
+        calculateUniqueSumsOfFive();
     }
 
     private static void calculateUniqueSumsOfTwo() {
@@ -82,6 +85,75 @@ public class SudokuSums {
         }
 
         printResult(sumsMapThree);
+    }
+
+    private static void recursionCalculation(int levelOfDepth, int currentDepth, List<Integer> usedNumbers,
+            HashMap sumMap) {
+
+        if (currentDepth == levelOfDepth) {
+            return;
+        }
+
+        System.out.println("levelOfDepth: " + currentDepth);
+        currentDepth++;
+
+        for (int i : SUDOKU_NUMBERS) {
+            // System.out.println(i + ": " + usedNumbers.contains(i));
+            if (!usedNumbers.contains(i)) {
+                usedNumbers.add(i);
+
+                if (currentDepth == levelOfDepth) {
+                    Integer sum = usedNumbers.stream().reduce(0, Integer::sum);
+                    String calculation = usedNumbers.stream().sorted().map(String::valueOf).collect(Collectors.joining(" + "));
+                    System.out.println("sum: " + sum + "\tcalculation: " + calculation);
+                    addToMap(sumMap, sum, calculation);
+                    usedNumbers.remove((Integer) i);
+                } else {
+                    recursionCalculation(levelOfDepth, currentDepth, usedNumbers, sumMap);
+                }
+            }
+        }
+        if ( usedNumbers.size() > 0 ) {
+            usedNumbers.remove(usedNumbers.size()-1);
+        }
+        currentDepth--;
+    }
+
+    private static void calculateUniqueSumsOfFive() {
+        HashMap<Integer, TreeSet<String>> sumsMap = new HashMap<>();
+
+        int levelOfDepth = 4;
+
+        recursionCalculation(levelOfDepth, 0, new ArrayList<Integer>(), sumsMap);
+
+        printResult(sumsMap);
+        sumsMap = new HashMap<>();
+
+        // recursion?!
+
+        // TODO: Dynamic nesting for e.g. sum of 5 and more...
+        for (int i : SUDOKU_NUMBERS) {
+            for (int j : SUDOKU_NUMBERS) {
+                if (j != i) {
+                    for (int k : SUDOKU_NUMBERS) {
+                        if (k != i && k != j) {
+                            for (int l : SUDOKU_NUMBERS) {
+                                if (l != i && l != j && l != k) {
+                                    int sum = i + j + k + l;
+                                    int[] numbers = { i, j, k, l };
+                                    Arrays.sort(numbers);
+                                    String calculation = numbers[0] + " + " + numbers[1] + " + " + numbers[2] + " + "
+                                            + numbers[3];
+                                    addToMap(sumsMap, sum, calculation);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // printResult(sumsMap);
     }
 
     private static void addToMap(HashMap<Integer, TreeSet<String>> map, int sum, String calculation) {
