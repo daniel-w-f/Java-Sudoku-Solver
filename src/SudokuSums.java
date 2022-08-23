@@ -128,33 +128,6 @@ public class SudokuSums {
         recursionCalculation(levelOfDepth, 0, new ArrayList<Integer>(), sumsMap);
 
         printResult(sumsMap);
-        sumsMap = new HashMap<>();
-
-        // recursion?!
-
-        // TODO: Dynamic nesting for e.g. sum of 5 and more...
-        // for (int i : SUDOKU_NUMBERS) {
-        //     for (int j : SUDOKU_NUMBERS) {
-        //         if (j != i) {
-        //             for (int k : SUDOKU_NUMBERS) {
-        //                 if (k != i && k != j) {
-        //                     for (int l : SUDOKU_NUMBERS) {
-        //                         if (l != i && l != j && l != k) {
-        //                             int sum = i + j + k + l;
-        //                             int[] numbers = { i, j, k, l };
-        //                             Arrays.sort(numbers);
-        //                             String calculation = numbers[0] + " + " + numbers[1] + " + " + numbers[2] + " + "
-        //                                     + numbers[3];
-        //                             addToMap(sumsMap, sum, calculation);
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-        // printResult(sumsMap);
     }
 
     private static void addToMap(HashMap<Integer, TreeSet<String>> map, int sum, String calculation) {
