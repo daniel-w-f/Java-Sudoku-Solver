@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ public class SudokuSums {
     public static void main(String[] args) {
         // calculateUniqueSumsOfTwo();
         // calculateUniqueSumsOfThree();
-        calculateUniqueSumsOfFour();
+        // calculateUniqueSumsOfFour();
         calculateUniqueSumsOfFive();
     }
 
@@ -94,7 +95,7 @@ public class SudokuSums {
             return;
         }
 
-        System.out.println("levelOfDepth: " + currentDepth);
+        // System.out.println("levelOfDepth: " + currentDepth);
         currentDepth++;
 
         for (int i : SUDOKU_NUMBERS) {
@@ -105,7 +106,7 @@ public class SudokuSums {
                 if (currentDepth == levelOfDepth) {
                     Integer sum = usedNumbers.stream().reduce(0, Integer::sum);
                     String calculation = usedNumbers.stream().sorted().map(String::valueOf).collect(Collectors.joining(" + "));
-                    System.out.println("sum: " + sum + "\tcalculation: " + calculation);
+                    // System.out.println("sum: " + sum + "\tcalculation: " + calculation);
                     addToMap(sumMap, sum, calculation);
                     usedNumbers.remove((Integer) i);
                 } else {
@@ -122,7 +123,7 @@ public class SudokuSums {
     private static void calculateUniqueSumsOfFive() {
         HashMap<Integer, TreeSet<String>> sumsMap = new HashMap<>();
 
-        int levelOfDepth = 4;
+        int levelOfDepth = 5;
 
         recursionCalculation(levelOfDepth, 0, new ArrayList<Integer>(), sumsMap);
 
@@ -132,26 +133,26 @@ public class SudokuSums {
         // recursion?!
 
         // TODO: Dynamic nesting for e.g. sum of 5 and more...
-        for (int i : SUDOKU_NUMBERS) {
-            for (int j : SUDOKU_NUMBERS) {
-                if (j != i) {
-                    for (int k : SUDOKU_NUMBERS) {
-                        if (k != i && k != j) {
-                            for (int l : SUDOKU_NUMBERS) {
-                                if (l != i && l != j && l != k) {
-                                    int sum = i + j + k + l;
-                                    int[] numbers = { i, j, k, l };
-                                    Arrays.sort(numbers);
-                                    String calculation = numbers[0] + " + " + numbers[1] + " + " + numbers[2] + " + "
-                                            + numbers[3];
-                                    addToMap(sumsMap, sum, calculation);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        // for (int i : SUDOKU_NUMBERS) {
+        //     for (int j : SUDOKU_NUMBERS) {
+        //         if (j != i) {
+        //             for (int k : SUDOKU_NUMBERS) {
+        //                 if (k != i && k != j) {
+        //                     for (int l : SUDOKU_NUMBERS) {
+        //                         if (l != i && l != j && l != k) {
+        //                             int sum = i + j + k + l;
+        //                             int[] numbers = { i, j, k, l };
+        //                             Arrays.sort(numbers);
+        //                             String calculation = numbers[0] + " + " + numbers[1] + " + " + numbers[2] + " + "
+        //                                     + numbers[3];
+        //                             addToMap(sumsMap, sum, calculation);
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
         // printResult(sumsMap);
     }
@@ -164,13 +165,13 @@ public class SudokuSums {
     }
 
     private static void printResult(HashMap<Integer, TreeSet<String>> sumsMapThree) {
-        for (Map.Entry<Integer, TreeSet<String>> entry : sumsMapThree.entrySet()) {
-            Integer key = entry.getKey();
+        SortedSet<Integer> keySet = new TreeSet<>(sumsMapThree.keySet());
+
+        for (Integer key : keySet) {
             if (key >= MIN_SUM && key <= MAX_SUM) {
                 System.out.println("Key: " + key);
-                TreeSet<String> list = entry.getValue();
+                TreeSet<String> list = sumsMapThree.get(key);
                 for (String string : list) {
-                    // System.out.println(string);
                     System.out.print(string + ", ");
                 }
                 System.out.println();
