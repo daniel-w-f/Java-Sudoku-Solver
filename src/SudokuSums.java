@@ -1,13 +1,15 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
 public class SudokuSums {
 
-    static int[] SUDOKU_NUMBERS = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    // static int[] SUDOKU_NUMBERS = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    static int[] SUDOKU_NUMBERS = new int[] { 1, 2, 3, 4, 5, 6, 9 };
+
+    static int MIN_SUM = 15;
+    static int MAX_SUM = 15;
 
     public static void main(String[] args) {
         calculateUniqueSumsOfTwo();
@@ -64,11 +66,12 @@ public class SudokuSums {
                     for (int k : SUDOKU_NUMBERS) {
                         if (k != i && k != j) {
                             for (int l : SUDOKU_NUMBERS) {
-                                if (l != i && l != j && l != k ) {
+                                if (l != i && l != j && l != k) {
                                     int sum = i + j + k + l;
-                                    int[] numbers = { i, j, k, l};
+                                    int[] numbers = { i, j, k, l };
                                     Arrays.sort(numbers);
-                                    String calculation = numbers[0] + " + " + numbers[1] + " + " + numbers[2] + " + " + numbers[3];
+                                    String calculation = numbers[0] + " + " + numbers[1] + " + " + numbers[2] + " + "
+                                            + numbers[3];
                                     addToMap(sumsMapThree, sum, calculation);
                                 }
                             }
@@ -91,13 +94,15 @@ public class SudokuSums {
     private static void printResult(HashMap<Integer, TreeSet<String>> sumsMapThree) {
         for (Map.Entry<Integer, TreeSet<String>> entry : sumsMapThree.entrySet()) {
             Integer key = entry.getKey();
-            System.out.println("Key: " + key);
-            TreeSet<String> list = entry.getValue();
-            for (String string : list) {
-                // System.out.println(string);
-                System.out.print(string +", ");
+            if (key >= MIN_SUM && key <= MAX_SUM) {
+                System.out.println("Key: " + key);
+                TreeSet<String> list = entry.getValue();
+                for (String string : list) {
+                    // System.out.println(string);
+                    System.out.print(string + ", ");
+                }
+                System.out.println();
             }
-            System.out.println();
         }
     }
 }
