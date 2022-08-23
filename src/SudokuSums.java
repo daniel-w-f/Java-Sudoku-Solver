@@ -12,6 +12,7 @@ public class SudokuSums {
     public static void main(String[] args) {
         calculateUniqueSumsOfTwo();
         calculateUniqueSumsOfThree();
+        calculateUniqueSumsOfFour();
     }
 
     private static void calculateUniqueSumsOfTwo() {
@@ -23,10 +24,7 @@ public class SudokuSums {
                     int sum = i + j;
                     // String calculation = i +" + "+ j;
                     String calculation = i < j ? i + " + " + j : j + " + " + i;
-                    if (sumsMapTwo.get(sum) == null) {
-                        sumsMapTwo.put(sum, new TreeSet<String>());
-                    }
-                    sumsMapTwo.get(sum).add(calculation);
+                    addToMap(sumsMapTwo, sum, calculation);
                 }
             }
         }
@@ -46,10 +44,7 @@ public class SudokuSums {
                             int[] numbers = { i, j, k };
                             Arrays.sort(numbers);
                             String calculation = numbers[0] + " + " + numbers[1] + " + " + numbers[2];
-                            if (sumsMapThree.get(sum) == null) {
-                                sumsMapThree.put(sum, new TreeSet<String>());
-                            }
-                            sumsMapThree.get(sum).add(calculation);
+                            addToMap(sumsMapThree, sum, calculation);
                         }
                     }
                 }
@@ -59,14 +54,50 @@ public class SudokuSums {
         printResult(sumsMapThree);
     }
 
+    private static void calculateUniqueSumsOfFour() {
+        HashMap<Integer, TreeSet<String>> sumsMapThree = new HashMap<>();
+
+        // TODO: Dynamic nesting for e.g. sum of 5 and more...
+        for (int i : SUDOKU_NUMBERS) {
+            for (int j : SUDOKU_NUMBERS) {
+                if (j != i) {
+                    for (int k : SUDOKU_NUMBERS) {
+                        if (k != i && k != j) {
+                            for (int l : SUDOKU_NUMBERS) {
+                                if (l != i && l != j && l != k ) {
+                                    int sum = i + j + k + l;
+                                    int[] numbers = { i, j, k, l};
+                                    Arrays.sort(numbers);
+                                    String calculation = numbers[0] + " + " + numbers[1] + " + " + numbers[2] + " + " + numbers[3];
+                                    addToMap(sumsMapThree, sum, calculation);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        printResult(sumsMapThree);
+    }
+
+    private static void addToMap(HashMap<Integer, TreeSet<String>> map, int sum, String calculation) {
+        if (map.get(sum) == null) {
+            map.put(sum, new TreeSet<String>());
+        }
+        map.get(sum).add(calculation);
+    }
+
     private static void printResult(HashMap<Integer, TreeSet<String>> sumsMapThree) {
         for (Map.Entry<Integer, TreeSet<String>> entry : sumsMapThree.entrySet()) {
             Integer key = entry.getKey();
             System.out.println("Key: " + key);
             TreeSet<String> list = entry.getValue();
             for (String string : list) {
-                System.out.println(string);
+                // System.out.println(string);
+                System.out.print(string +", ");
             }
+            System.out.println();
         }
     }
 }
